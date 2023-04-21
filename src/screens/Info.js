@@ -10,7 +10,7 @@ const Info = ({navigation}) => {
   const save = async () => {
     try {
       await AsyncStorage.setItem(
-        'name',
+        '1name',
         text,
       );
       await AsyncStorage.setItem(
