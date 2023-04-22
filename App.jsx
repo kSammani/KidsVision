@@ -8,7 +8,7 @@ import Test from './src/screens/Test';
 import Info from './src/screens/Info';
 import Level1N from './src/screens/Level1N';
 import Instructions from './src/screens/Instructions';
-
+import FinalScore from './src/screens/FinalScore';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +23,7 @@ export default function App() {
       <Stack.Screen name="Test" component={Test}/>
       <Stack.Screen name="Level1N" component={Level1N}/>
       <Stack.Screen name="Instructions" component={Instructions}/>
+      <Stack.Screen name="FinalScore" component={FinalScore}/>
     </Stack.Navigator>
     </NavigationContainer>
   );

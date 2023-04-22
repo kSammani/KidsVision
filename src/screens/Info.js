@@ -10,9 +10,10 @@ const Info = ({navigation}) => {
   const save = async () => {
     try {
       await AsyncStorage.setItem(
-        '1name',
+        'name',
         text,
       );
+
       await AsyncStorage.setItem(
         'age',
         number,
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     color:'#000'
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
   },
   touchContainer: {

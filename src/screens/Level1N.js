@@ -17,6 +17,8 @@ const Level1N = ({ navigation }) => {
         require('../images/level1N/orange.png'),
     ];
 
+    
+
     const initialData = ['Apple', 'Strawberry', 'Papaya', 'Banana', 'Grapes', "Orange"];
 
     const FRUIT_BUTTONS = [
@@ -51,6 +53,8 @@ const Level1N = ({ navigation }) => {
         }
         console.log('Result ', count, '/', images.length);
     }, [clickedFruit]);
+
+    
 
     const ProgressBar = ({ progress, width, height, color }) => {
         const animatedValue = useRef(new Animated.Value(progress - (1 / images.length))).current;

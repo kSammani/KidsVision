@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Image, Text, Animated } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const Level1CB = ({ navigation }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -16,6 +17,8 @@ const Level1CB = ({ navigation }) => {
         require('../images/level1CB/level1-5.png'),
     ];
 
+    // const colors = ['#B3E2E9', '#FBE679', '#96C18F', '#EBA5A5', '#ACA8A8'];
+
     const initialData = [4, 5, 6, 5, 7];
 
     const NUMBER_BUTTONS = [
@@ -24,7 +27,7 @@ const Level1CB = ({ navigation }) => {
         [7, 8, 9],
     ];
 
-    const handleButtonClick = (number) => {
+    const handleButtonClick = (number, color) => {
         if (currentImageIndex == (images.length-1)) {
             setDone(true);
         }
@@ -34,6 +37,8 @@ const Level1CB = ({ navigation }) => {
         setCurrentImageIndex((prevIndex) => prevIndex + 1);
         setClickedNumbers((prevClickedNumbers) => [...prevClickedNumbers, number]);    
     };
+
+    
 
     useEffect(() => {
         console.log(clickedNumbers);
