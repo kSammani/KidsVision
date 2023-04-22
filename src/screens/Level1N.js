@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Image, Text, Animated } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Level1N = ({ navigation }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [clickedFruit, setClickedFruit] = useState([]);
     const [done, setDone] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [result, setResult] = useState('');
 
     const images = [
         require('../images/level1N/apple.png'),
@@ -17,8 +19,6 @@ const Level1N = ({ navigation }) => {
         require('../images/level1N/orange.png'),
     ];
 
-    
-
     const initialData = ['Apple', 'Strawberry', 'Papaya', 'Banana', 'Grapes', "Orange"];
 
     const FRUIT_BUTTONS = [
@@ -28,7 +28,7 @@ const Level1N = ({ navigation }) => {
     ];
 
     const handleButtonClick = (fruit) => {
-        if (currentImageIndex == (images.length-1)) {
+        if (currentImageIndex == (images.length - 1)) {
             setDone(true);
         }
         if (progress < 1) {
@@ -51,10 +51,11 @@ const Level1N = ({ navigation }) => {
                 count++;
             }
         }
+        setResult(`Nearsightedness Level 01 Results ${count} / ${images.length}`)
         console.log('Result ', count, '/', images.length);
     }, [clickedFruit]);
 
-    
+
 
     const ProgressBar = ({ progress, width, height, color }) => {
         const animatedValue = useRef(new Animated.Value(progress - (1 / images.length))).current;
@@ -74,7 +75,7 @@ const Level1N = ({ navigation }) => {
         });
 
         return (
-            <View style={{ width, height, backgroundColor: '#fff', position: 'absolute' }}>
+            <View style={{ width, height, backgroundColor: '#FAF7F0', position: 'absolute' }}>
                 <Animated.View
                     style={[
                         styles.progress,
@@ -89,22 +90,42 @@ const Level1N = ({ navigation }) => {
         );
     };
 
+    const tryAgain = () => {
+        setDone(false);
+        setCurrentImageIndex(0);
+        setClickedFruit([]);
+        setProgress(0);
+        setResult('');
+    }
+
+    const next = async () => {
+        try {
+            await AsyncStorage.setItem(
+                'L1N',
+                result,
+            );
+            navigation.navigate('FinalScore');
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <>
             <View style={styles.container}>
                 {done ?
                     <>
-                        <TouchableOpacity onPress={() => {
-                            setDone(false);
-                            setCurrentImageIndex(0);
-                            setClickedFruit([]);
-                            setProgress(0);
-                        }}>
+                        <Text style={styles.endTxt}>End of Nearsightedness Test</Text>
+                        <TouchableOpacity onPress={tryAgain}>
                             <Text style={styles.Txt}>Try Again?</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("Main")}>
-                            <Text style={styles.Txt}>Next</Text>
+                        <TouchableOpacity onPress={next}>
+                            <Text style={styles.Txt}>Final Score</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => { navigation.navigate('First') }}>
+                            <Text style={styles.Txt}>Home</Text>
                         </TouchableOpacity>
                     </>
                     :
@@ -127,7 +148,7 @@ const Level1N = ({ navigation }) => {
                     </>
                 }
             </View>
-            <ProgressBar progress={progress} color={'#FFB52E'} width='100%' height={30} />
+            <ProgressBar progress={progress} color={'#000'} width='100%' height={40} />
         </>
     );
 }
@@ -138,7 +159,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "column",
-        backgroundColor: '#FFF',
+        backgroundColor: '#FAF7F0',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20
@@ -147,13 +168,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 20
     },
+    endTxt: {
+        textAlign: 'center',
+        fontFamily: 'DreamingOutloudPro',
+        color: '#000',
+        fontSize: 35,
+    },
     Txt: {
         padding: 20,
-        fontFamily: 'Cochin',
+        fontFamily: 'DreamingOutloudPro',
         color: '#000',
-        fontSize: 22,
+        fontSize: 25,
         marginTop: 20,
-       
     },
     row: {
         flexDirection: 'row',
@@ -172,6 +198,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 20,
+        fontFamily: 'DreamingOutloudPro',
         color: 'black'
     },
 });
