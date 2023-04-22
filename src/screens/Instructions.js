@@ -54,7 +54,7 @@ const Instructions = ({navigation}) =>{
                             alignItems: 'center',
                             padding:20,
                             paddingTop: 100,
-                            backgroundColor:'#F2DFBD'
+                            backgroundColor:'#FAF7F0'
                         }}>
                             <Image
                                 source={item.image}
@@ -65,9 +65,10 @@ const Instructions = ({navigation}) =>{
                                 resizeMode='contain'
                             />
                             <Text style={{
-                                fontWeight: 'bold',
+                         
                                 color: COLORS.title,
                                 fontSize:SIZE.h1,
+                                fontFamily: 'DreamingOutloudPro',
                                 paddingTop:40,
                             }}>
                                 {item.title}
@@ -76,6 +77,7 @@ const Instructions = ({navigation}) =>{
                                 color: COLORS.title,
                                 textAlign: 'center',
                                 fontSize:SIZE.h4,
+                                fontFamily: 'DreamingOutloudPro',
                                 paddingTop:10,
                             }}>
                                 {item.description}

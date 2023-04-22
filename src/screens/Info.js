@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, StyleSheet, View, Image,Text, TextInput} from 'react-native';
+import { StyleSheet, View,Text, TextInput} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -20,7 +20,7 @@ const Info = ({navigation}) => {
       );
       navigation.navigate('First');
     } catch (error) {
-      // Error saving data
+      console.log(error);
     }
   };
       return (
@@ -30,7 +30,7 @@ const Info = ({navigation}) => {
               onChangeText={onChangeText}
               value={text}
               placeholder="Enter Child Name"
-              placeholderTextColor='#808080'
+              placeholderTextColor='#9c9c9c'
             />
             <TextInput
               style={styles.input}
@@ -38,14 +38,12 @@ const Info = ({navigation}) => {
               value={number}
               placeholder="Enter Child Age"
               keyboardType="numeric"
-              placeholderTextColor='#808080'
+              placeholderTextColor='#9c9c9c'
             />
-           <View style={styles.buttonContainer}>
-            <View style={styles.touchContainer}>
-              <TouchableOpacity style={styles.tch} onPress={save}>
-                <Text style={styles.buttonText}>Go!!!</Text>
-              </TouchableOpacity>
-            </View>
+           <View style={styles.touchContainer}>
+            <TouchableOpacity style={styles.tch} onPress={save}>
+              <Text style={styles.buttonText}>Go!!!</Text>
+            </TouchableOpacity>
           </View>
         </View>
         );     
@@ -56,7 +54,7 @@ export default Info;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2DFBD',
+    backgroundColor: '#FAF7F0',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -64,20 +62,17 @@ const styles = StyleSheet.create({
     height: 60,
     width:330,
     margin: 10,
+    fontFamily: 'DreamingOutloudPro',
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
     fontSize: 18,
-    color:'#000'
-  },
-  buttonContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
+    color:'#565b64'
   },
   touchContainer: {
     height: 60,
     width: 330,
-    margin: 50,
+    margin: 10,
   },
   tch: {
     height: '100%',
@@ -86,16 +81,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 35,
     padding: 10,
-    backgroundColor: '#FFB52E',
+    backgroundColor: '#565b64',
   },
-  buttonText:{
-    fontSize:24,
-    color:'#ffffff',
-  },
-  Txt: {
-    padding: 20,
-    fontFamily: 'Cochin',
-    color: '#000',
-    fontSize: 20,
+  buttonText: {
+    fontSize: 25,
+    fontFamily: 'DreamingOutloudPro',
+    color: '#fff'
   },
 });

@@ -16,15 +16,15 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="Splash" component={Splash} />
-      <Stack.Screen name="Info" component={Info} />
-      <Stack.Screen name="First" component={First} />
-      <Stack.Screen name="Level1CB" component={Level1CB}/>
-      <Stack.Screen name="Test" component={Test}/>
-      <Stack.Screen name="Level1N" component={Level1N}/>
-      <Stack.Screen name="Instructions" component={Instructions}/>
-      <Stack.Screen name="FinalScore" component={FinalScore}/>
-    </Stack.Navigator>
+        <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
+        <Stack.Screen name="Info" component={Info} options={{ headerShown: false }} />
+        <Stack.Screen name="First" component={First} options={{ headerShown: false }} />
+        <Stack.Screen name="Level1CB" component={Level1CB} options={{ headerShown: false }} />
+        <Stack.Screen name="Test" component={Test} options={{ headerShown: false }} />
+        <Stack.Screen name="Level1N" component={Level1N} options={{ headerShown: false }} />
+        <Stack.Screen name="Instructions" component={Instructions} options={{ headerShown: false }} />
+        <Stack.Screen name="FinalScore" component={FinalScore} options={{ headerShown: false }} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
