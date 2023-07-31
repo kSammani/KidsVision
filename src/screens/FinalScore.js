@@ -12,6 +12,7 @@ const FinalScore = ({ navigation }) => {
   const [cbl1, setCbl1] = useState('');
   const [cbl2, setCbl2] = useState('');
   const [nl1, setNl1] = useState('');
+  const [nl2, setNl2] = useState('');
 
   const [anim, setAnim] = useState(false);
 
@@ -23,12 +24,14 @@ const FinalScore = ({ navigation }) => {
         const cb1 = await AsyncStorage.getItem("L1CB");
         const cb2 = await AsyncStorage.getItem("L2CB");
         const n1 = await AsyncStorage.getItem("L1N");
-        if (nm !== null && ag !== null && cb1 !== null && cb2 !== null && n1 !== null) {
+        const n2 = await AsyncStorage.getItem("L2N");
+        if (nm !== null || ag !== null || cb1 !== null || cb2 !== null || n1 !== null || n2 !== null) {
           setName(nm);
           setAge(ag);
           setCbl1(cb1);
           setCbl2(cb2);
           setNl1(n1);
+          setNl2(n2);
           // setAnim(true);
         } else {
           setDone(true);
@@ -61,6 +64,7 @@ const FinalScore = ({ navigation }) => {
           <Text style={styles.rTxt}>{cbl1}</Text>
           <Text style={styles.rTxt}>{cbl2}</Text>
           <Text style={styles.rTxt}>{nl1}</Text>
+          <Text style={styles.rTxt}>{nl2}</Text>
           <View style={styles.touchContainer}>
             <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('First')}>
               <Text style={styles.buttonText}>Home</Text>

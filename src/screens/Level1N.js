@@ -89,7 +89,7 @@ const Level1N = ({ navigation }) => {
                 'L1N',
                 result,
             );
-            navigation.navigate('FinalScore');
+            navigation.navigate('Level2N');
         } catch (error) {
             console.log(error);
         }
@@ -107,7 +107,7 @@ const Level1N = ({ navigation }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={next}>
-                            <Text style={styles.Txt}>Final Score</Text>
+                            <Text style={styles.Txt}>Next</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => { navigation.navigate('First') }}>
