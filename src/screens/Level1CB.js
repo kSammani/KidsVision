@@ -11,7 +11,11 @@ const Level1CB = ({ navigation }) => {
     const [colorIndex, setColorIndex] = useState(0);
     const [result, setResult] = useState('');
 
+<<<<<<< Updated upstream
     const colors = ['#B3E2E9', '#FBE679', '#96C18F', '#EBA5A5', '#ACA8A8', '#FAF7F0'];
+=======
+    const colors = ['#B6D0E2', '#FFFDD0', '#B1D8B7', '#F9CCD3', '#BFCAD0'];
+>>>>>>> Stashed changes
 
     const images = [
         require('../images/level1CB/level1-1.png'),
@@ -123,8 +127,8 @@ const Level1CB = ({ navigation }) => {
         Txt: {
             padding: 20,
             fontFamily: 'DreamingOutloudPro',
-            color: '#A36A00',
-            fontSize: 22,
+            color: '#000',
+            fontSize: 25,
             marginTop: 20,
             marginBottom: 20,
         },
@@ -142,7 +146,7 @@ const Level1CB = ({ navigation }) => {
             justifyContent: 'center',
         },
         button: {
-            backgroundColor: '#FFB52E',
+            backgroundColor: '#899499',
             borderRadius: 25,
             height: 80,
             width: 80,
@@ -198,6 +202,11 @@ const Level1CB = ({ navigation }) => {
                 }
             </View>
         </View>
+<<<<<<< Updated upstream
+=======
+        <ProgressBar progress={progress} color={'#71797E'} width='100%' height={40} />
+        </>
+>>>>>>> Stashed changes
     );
 }
 

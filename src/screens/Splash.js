@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const Splash = ({ navigation }) => {
   return (
     <>
-      <StatusBar translucent backgroundColor="#FAF7F0" />
+      <StatusBar translucent backgroundColor="#D3D3D3" />
       <View style={styles.container}>
         <Image source={require('../images/logo.png')} style={styles.img} />
           <View style={styles.touchContainer}>
@@ -23,7 +23,7 @@ export default Splash;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF7F0',
+    backgroundColor: '#D3D3D3',
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         padding: 20,
         fontFamily: 'DreamingOutloudPro',
         color: '#000',
-        fontSize: 25,
+        fontSize: 26,
         marginTop: 20,
     },
     row: {
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonText: {
-        fontSize: 20,
+        fontSize: 22,
         fontFamily: 'DreamingOutloudPro',
         color: 'black'
     },

@@ -76,7 +76,7 @@ const Instructions = ({navigation}) =>{
                             <Text style={{
                                 color: COLORS.title,
                                 textAlign: 'center',
-                                fontSize:SIZE.h4,
+                                fontSize:SIZE.h3,
                                 fontFamily: 'DreamingOutloudPro',
                                 paddingTop:10,
                             }}>
