@@ -11,7 +11,7 @@ const Level1CB = ({ navigation }) => {
     const [colorIndex, setColorIndex] = useState(0);
     const [result, setResult] = useState('');
 
-    const colors = ['#B3E2E9', '#FBE679', '#96C18F', '#EBA5A5', '#ACA8A8'];
+    const colors = ['#B3E2E9', '#FBE679', '#96C18F', '#EBA5A5', '#ACA8A8', '#FAF7F0'];
 
     const images = [
         require('../images/level1CB/level1-1.png'),
@@ -29,17 +29,24 @@ const Level1CB = ({ navigation }) => {
         [7, 8, 9],
     ];
 
-    const handleButtonClick = (number) => {
-        if (currentImageIndex == (images.length-1)) {
+    const initialSeconds = 120;
+    const [seconds, setSeconds] = useState(initialSeconds);
+
+    useEffect(() => {
+        if (seconds <= 0) {
             setDone(true);
+            return;
         }
-        if (progress < 1) {
-            setProgress(prevProgress => prevProgress + (1/images.length));
-        }
-        setColorIndex((prevIndex) => prevIndex + 1);
-        setCurrentImageIndex((prevIndex) => prevIndex + 1);
-        setClickedNumbers((prevClickedNumbers) => [...prevClickedNumbers, number]);    
-    };
+        const timeout = setTimeout(() => {
+            setSeconds(seconds - 1);
+        }, 1000);
+
+        return () => clearTimeout(timeout);
+    }, [seconds]);
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const isUnderOneMinute = minutes < 1;
 
     useEffect(() => {
         console.log(clickedNumbers);
@@ -58,41 +65,21 @@ const Level1CB = ({ navigation }) => {
         console.log('Result ', count, '/', images.length);
     }, [clickedNumbers]);
 
-    const ProgressBar = ({ progress, width, height, color }) => {
-        const animatedValue = useRef(new Animated.Value(progress-(1/images.length))).current;
-
-        useEffect(() => {
-            Animated.timing(animatedValue, {
-                toValue: progress,
-                duration: 500,
-                useNativeDriver: false,
-            }).start();
-        }, [progress]);
-
-        const widthInterpolate = animatedValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0%', '100%'],
-            extrapolate: 'clamp',
-        });
-
-        return (
-            <View style={{ width, height, backgroundColor: colors[colorIndex], position: 'absolute' }}>
-                <Animated.View
-                    style={[
-                        styles.progress,
-                        {
-                            width: widthInterpolate,
-                            height,
-                            backgroundColor: color,
-                        },
-                    ]}
-                />
-            </View>
-        );
+    const handleButtonClick = (number) => {
+        if (currentImageIndex == (images.length - 1)) {
+            setDone(true);
+        }
+        if (progress < 100) {
+            setProgress(prevProgress => prevProgress + (100 / images.length));
+        }
+        setColorIndex(done ? colors.length - 1 : (prevIndex) => prevIndex + 1);
+        setCurrentImageIndex((prevIndex) => prevIndex + 1);
+        setClickedNumbers((prevClickedNumbers) => [...prevClickedNumbers, number]);
     };
 
     const tryAgain = () => {
         setDone(false);
+        setSeconds(initialSeconds);
         setCurrentImageIndex(0);
         setClickedNumbers([]);
         setProgress(0);
@@ -100,26 +87,34 @@ const Level1CB = ({ navigation }) => {
         setResult('');
     }
 
-    const next = async () =>  {
+    const next = async () => {
         try {
             await AsyncStorage.setItem(
-              'L1CB',
-              result,
+                'L1CB',
+                result,
             );
             navigation.navigate('Test');
-          } catch (error) {
+        } catch (error) {
             console.log(error);
-          }
+        }
     }
 
     const styles = StyleSheet.create({
+        mainContainer: {
+            flex: 1,
+            backgroundColor: colors[colorIndex],
+        },
         container: {
             flex: 1,
             flexDirection: "column",
-            backgroundColor: colors[colorIndex],
             justifyContent: 'center',
             alignItems: 'center',
             padding: 20
+        },
+        gameContainer: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
         },
         imgcontainer: {
             alignItems: 'center',
@@ -132,6 +127,15 @@ const Level1CB = ({ navigation }) => {
             fontSize: 22,
             marginTop: 20,
             marginBottom: 20,
+        },
+        intrTxt: {
+            textAlign: 'center',
+            fontFamily: 'DreamingOutloudPro',
+            color: '#000',
+            fontSize: 20,
+        },
+        redTimerTxt: {
+            color: 'red',
         },
         row: {
             flexDirection: 'row',
@@ -154,41 +158,46 @@ const Level1CB = ({ navigation }) => {
     });
 
     return (
-        <>
-        <StatusBar translucent backgroundColor={colors[colorIndex]} />
-        <View style={styles.container}>
-            {done ?
-                <>
-                    <TouchableOpacity onPress={tryAgain}>
-                        <Text style={styles.Txt}>Try Again?</Text>
-                    </TouchableOpacity>
+        <View style={styles.mainContainer}>
+            <View style={{ width: `${progress}%`, height: '5%', backgroundColor: '#000000' }}></View>
+            <StatusBar translucent backgroundColor={colors[colorIndex]} />
+            <View style={styles.container}>
+                {done ?
+                    <>
+                        <TouchableOpacity onPress={tryAgain}>
+                            <Text style={styles.Txt}>Try Again?</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity onPress={next}>
-                        <Text style={styles.Txt}>Next</Text>
-                    </TouchableOpacity>
-                </>
-                :
-                <>
-                    <Text style={styles.Txt}>How many items are there?</Text>
+                        <TouchableOpacity onPress={next}>
+                            <Text style={styles.Txt}>Next</Text>
+                        </TouchableOpacity>
+                    </>
+                    :
+                    <>
+                        <View style={styles.gameContainer}>
+                            <Text style={styles.Txt}>How many items are there?</Text>
 
-                    <View style={styles.imgcontainer}>
-                        <Image source={images[currentImageIndex]} style={styles.img} />
-                    </View>
+                            <View style={styles.imgcontainer}>
+                                <Image source={images[currentImageIndex]} style={styles.img} />
+                            </View>
 
-                    {NUMBER_BUTTONS.map((row, index) => (
-                        <View style={styles.row} key={index}>
-                            {row.map((number) => (
-                                <TouchableOpacity style={styles.button} key={number} onPress={() => handleButtonClick(number)}>
-                                    <Text style={styles.buttonText}>{number}</Text>
-                                </TouchableOpacity>
+                            {NUMBER_BUTTONS.map((row, index) => (
+                                <View style={styles.row} key={index}>
+                                    {row.map((number) => (
+                                        <TouchableOpacity style={styles.button} key={number} onPress={() => handleButtonClick(number)}>
+                                            <Text style={styles.buttonText}>{number}</Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
                             ))}
                         </View>
-                    ))}
-                </>
-            }         
+                        <View>
+                            <Text style={[styles.intrTxt, isUnderOneMinute && styles.redTimerTxt]}>Time Remaining {minutes < 10 ? `0${minutes}` : minutes}:{remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}</Text>
+                        </View>
+                    </>
+                }
+            </View>
         </View>
-        <ProgressBar progress={progress} color={'#FFB52E'} width='100%' height={40} />
-        </>
     );
 }
 

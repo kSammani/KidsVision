@@ -7,6 +7,7 @@ import Level1CB from './src/screens/Level1CB';
 import Test from './src/screens/Test';
 import Info from './src/screens/Info';
 import Level1N from './src/screens/Level1N';
+import Level2N from './src/screens/Level2N';
 import Instructions from './src/screens/Instructions';
 import FinalScore from './src/screens/FinalScore';
 
@@ -22,6 +23,7 @@ export default function App() {
         <Stack.Screen name="Level1CB" component={Level1CB} options={{ headerShown: false }} />
         <Stack.Screen name="Test" component={Test} options={{ headerShown: false }} />
         <Stack.Screen name="Level1N" component={Level1N} options={{ headerShown: false }} />
+        <Stack.Screen name="Level2N" component={Level2N} options={{ headerShown: false }} />
         <Stack.Screen name="Instructions" component={Instructions} options={{ headerShown: false }} />
         <Stack.Screen name="FinalScore" component={FinalScore} options={{ headerShown: false }} />
       </Stack.Navigator>
