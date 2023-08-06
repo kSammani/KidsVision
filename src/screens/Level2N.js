@@ -9,11 +9,32 @@ const AnimatedImageLoop = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [result, setResult] = useState('');
   const [done, setDone] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  // const initialSeconds = 120;
+  // const [seconds, setSeconds] = useState(initialSeconds);
+
+  // useEffect(() => {
+  //     if (seconds <= 0) {
+  //         setDone(true);
+  //         return;
+  //     }
+  //     const timeout = setTimeout(() => {
+  //         setSeconds(seconds - 1);
+  //     }, 1000);
+
+  //     return () => clearTimeout(timeout);
+  // }, [seconds]);
+
+  // const minutes = Math.floor(seconds / 60);
+  // const remainingSeconds = seconds % 60;
+  // const isUnderOneMinute = minutes < 1;
+
   const leftToRightValue = new Animated.Value(-IMAGE_WIDTH);
   const rightToLeftValue = new Animated.Value(width);
 
   const topToBottomValue = new Animated.Value(-IMAGE_WIDTH);
-  const bottomToTopValue = new Animated.Value(height + IMAGE_WIDTH);
+  const bottomToTopValue = new Animated.Value(height);
 
   const animMoveHor = () => {
     Animated.loop(
@@ -37,7 +58,7 @@ const AnimatedImageLoop = ({ navigation }) => {
     Animated.loop(
       Animated.parallel([
         Animated.timing(topToBottomValue, {
-          toValue: height + IMAGE_WIDTH,
+          toValue: height,
           duration: 5000,
           useNativeDriver: false,
         }),
@@ -77,15 +98,23 @@ const AnimatedImageLoop = ({ navigation }) => {
 
   const press1 = (value) => {
     setData([...data, value]);
+    if (progress < 100) {
+      setProgress(prevProgress => prevProgress + (100 / 5));
+    }
   };
 
   const press0 = (value) => {
     setData([...data, value]);
+    if (progress < 100) {
+      setProgress(prevProgress => prevProgress + (100 / 5));
+    }
   };
 
   const tryAgain = () => {
     setDone(false);
+    // setSeconds(initialSeconds);
     setData([]);
+    setProgress(0);
   }
 
   const next = async () => {
@@ -103,6 +132,7 @@ const AnimatedImageLoop = ({ navigation }) => {
 
   return (
     <View style={styles.mainContainer}>
+      <View style={{ width: `${progress}%`, height: '5%', backgroundColor: '#000000' }}></View>
       {done ?
         <View style={styles.finalContainer}>
           <TouchableOpacity onPress={tryAgain}>
@@ -189,6 +219,9 @@ const AnimatedImageLoop = ({ navigation }) => {
               </Animated.View>
             </View>
           )}
+          {/* <View style={styles.timerContainer}>
+            <Text style={[styles.intrTxt, isUnderOneMinute && styles.redTimerTxt]}>Time Remaining {minutes < 10 ? `0${minutes}` : minutes}:{remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}</Text>
+          </View> */}
         </>}
     </View>
   );
@@ -225,6 +258,9 @@ const styles = StyleSheet.create({
     width: IMAGE_WIDTH,
     height: IMAGE_WIDTH,
   },
+  timerContainer: {
+    paddingBottom: '5%',
+  },
   Txt: {
     padding: 20,
     fontFamily: 'DreamingOutloudPro',
@@ -232,6 +268,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginTop: 20,
     marginBottom: 20,
+  },
+  intrTxt: {
+    textAlign: 'center',
+    fontFamily: 'DreamingOutloudPro',
+    color: '#000',
+    fontSize: 20,
   },
 });
 
