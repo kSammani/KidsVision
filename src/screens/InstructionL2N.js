@@ -8,7 +8,7 @@ const Splash = ({ navigation }) => {
       <StatusBar translucent backgroundColor="#D3D3D3" />
       <View style={styles.container}>
         {/* <Image source={require('../images/logo.png')} style={styles.img} /> */}
-        <Text style={styles.txt1}>Level 1</Text>
+        <Text style={styles.txt1}>Level 2</Text>
         <Text style={styles.txt2}>Instructions</Text>
         <Text style={styles.txt3}>Click on the moving black & white ball.</Text>
           <View style={styles.touchContainer}>
