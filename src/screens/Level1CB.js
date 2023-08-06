@@ -175,7 +175,6 @@ const Level1CB = ({ navigation }) => {
                     :
                     <>
                         <View style={styles.gameContainer}>
-                            <Text style={styles.Txt}>How many items are there?</Text>
 
                             <View style={styles.imgcontainer}>
                                 <Image source={images[currentImageIndex]} style={styles.img} />

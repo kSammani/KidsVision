@@ -100,13 +100,6 @@ const Test = ({ navigation }) => {
                 </View>
                 :
                 <View style={styles.mainContainer}>
-                    <View style={styles.instructionContainer}>
-                        <Text style={styles.intrTxt}>
-                            <Text style={{ fontWeight: 'bold' }}>Instructions</Text>
-                            {'\n'}
-                            Drag and Drop the Most Closest Colors into the Empty Boxes
-                        </Text>
-                    </View>
                     <View style={styles.draxContainer}>
                         <DraxProvider>
                             <View style={styles.container}>
@@ -413,8 +406,8 @@ const Test = ({ navigation }) => {
                             </View>
                         </DraxProvider>
                     </View>
-                    <View>
-                        <Text style={[styles.intrTxt, isUnderOneMinute && styles.redTimerTxt]}>Time Remaining {minutes < 10 ? `0${minutes}` : minutes}:{remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}</Text>
+                    <View style={styles.timerContainer}>
+                        <Text style={[styles.timerTxt, isUnderOneMinute && styles.redTimerTxt]}>Time Remaining {minutes < 10 ? `0${minutes}` : minutes}:{remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}</Text>
                     </View>
                 </View>}
         </>
@@ -427,15 +420,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#FAF7F0',
         justifyContent: 'center',
     },
-    instructionContainer: {
-        height: '15%',
-        paddingTop: '7%',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     draxContainer: {
         flex: 1,
-        paddingTop: '5%',
+        paddingTop: '10%',
+    },
+    timerContainer: {
         paddingBottom: '5%',
     },
     container: {
@@ -451,7 +440,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20
     },
-    intrTxt: {
+    timerTxt: {
         textAlign: 'center',
         fontFamily: 'DreamingOutloudPro',
         color: '#000',
@@ -490,8 +479,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     receivingZone: {
-        width: 55,
-        height: 55,
+        width: 60,
+        height: 60,
         borderRadius: 10,
     },
     receiving: {
@@ -503,8 +492,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
     },
     draggableBox: {
-        width: 55,
-        height: 55,
+        width: 60,
+        height: 60,
         borderRadius: 10,
     },
     white: {
