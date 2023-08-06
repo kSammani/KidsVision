@@ -6,7 +6,7 @@ const First = ({navigation}) => {
     return (
       <View style={styles.container}>
             <View style={styles.touchContainer}>
-              <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('Level1CB')}>
+              <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('InstructionL1CB')}>
                 <Text style={styles.buttonText}>Color Blindness Test</Text>
               </TouchableOpacity>
             </View>

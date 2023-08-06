@@ -89,7 +89,7 @@ const Level1N = ({ navigation }) => {
                 'L1N',
                 result,
             );
-            navigation.navigate('Level2N');
+            navigation.navigate('InstructionL2N');
         } catch (error) {
             console.log(error);
         }

@@ -95,7 +95,7 @@ const Instructions = ({navigation}) =>{
                 renderDoneButton={() => buttonLables('Done')}
                 onDone={() =>{
                     // setShowLevel1N(true);
-                    navigation.navigate('Level1N')
+                    navigation.navigate('InstructionL1N')
                 }}
             />
         )
