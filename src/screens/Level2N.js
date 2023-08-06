@@ -3,7 +3,7 @@ import { View, Text, Image, Animated, TouchableOpacity, StyleSheet, Dimensions }
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
-const IMAGE_WIDTH = 100;
+const IMAGE_WIDTH = 150;
 
 const AnimatedImageLoop = ({ navigation }) => {
   const [data, setData] = useState([]);
@@ -61,6 +61,8 @@ const AnimatedImageLoop = ({ navigation }) => {
     } else if (data.length === 3) {
       animMoveVer();
     } else if (data.length === 4) {
+      animMoveHor();
+    } else if (data.length === 5) {
       let count = 0;
       for (let i = 0; i < data.length; i++) {
         if (data[i] == 1) {
@@ -120,12 +122,12 @@ const AnimatedImageLoop = ({ navigation }) => {
           {data.length === 0 && (
             <View style={styles.firstContainer}>
               <Animated.View style={[styles.imageContainer, { transform: [{ translateX: leftToRightValue }] }]}>
-                <TouchableOpacity onPress={() => press1(1)}>
+                <TouchableOpacity onPress={() => press0(0)}>
                   <Image source={require('../images/level2N/main.png')} style={styles.image} />
                 </TouchableOpacity>
               </Animated.View>
               <Animated.View style={[styles.imageContainer, { transform: [{ translateX: rightToLeftValue }] }]}>
-                <TouchableOpacity onPress={() => press0(0)}>
+                <TouchableOpacity onPress={() => press1(1)}>
                   <Image source={require('../images/level2N/1.png')} style={styles.image} />
                 </TouchableOpacity>
               </Animated.View>
@@ -134,13 +136,13 @@ const AnimatedImageLoop = ({ navigation }) => {
           {data.length === 1 && (
             <View style={styles.secondContainer}>
               <Animated.View style={[styles.imageContainer, { transform: [{ translateY: topToBottomValue }] }]}>
-                <TouchableOpacity onPress={() => press1(1)}>
+                <TouchableOpacity onPress={() => press0(0)}>
                   <Image source={require('../images/level2N/main.png')} style={styles.image} />
                 </TouchableOpacity>
               </Animated.View>
               <Animated.View style={[styles.imageContainer, { transform: [{ translateY: bottomToTopValue }] }]}>
-                <TouchableOpacity onPress={() => press0(0)}>
-                  <Image source={require('../images/level2N/1.png')} style={styles.image} />
+                <TouchableOpacity onPress={() => press1(1)}>
+                  <Image source={require('../images/level2N/2.png')} style={styles.image} />
                 </TouchableOpacity>
               </Animated.View>
             </View>
@@ -148,12 +150,12 @@ const AnimatedImageLoop = ({ navigation }) => {
           {data.length === 2 && (
             <View style={styles.firstContainer}>
               <Animated.View style={[styles.imageContainer, { transform: [{ translateX: leftToRightValue }] }]}>
-                <TouchableOpacity onPress={() => press0(0)}>
-                  <Image source={require('../images/level2N/1.png')} style={styles.image} />
+                <TouchableOpacity onPress={() => press1(1)}>
+                  <Image source={require('../images/level2N/3.png')} style={styles.image} />
                 </TouchableOpacity>
               </Animated.View>
               <Animated.View style={[styles.imageContainer, { transform: [{ translateX: rightToLeftValue }] }]}>
-                <TouchableOpacity onPress={() => press1(1)}>
+                <TouchableOpacity onPress={() => press0(0)}>
                   <Image source={require('../images/level2N/main.png')} style={styles.image} />
                 </TouchableOpacity>
               </Animated.View>
@@ -162,13 +164,27 @@ const AnimatedImageLoop = ({ navigation }) => {
           {data.length === 3 && (
             <View style={styles.secondContainer}>
               <Animated.View style={[styles.imageContainer, { transform: [{ translateY: topToBottomValue }] }]}>
-                <TouchableOpacity onPress={() => press0(0)}>
-                  <Image source={require('../images/level2N/1.png')} style={styles.image} />
+                <TouchableOpacity onPress={() => press1(1)}>
+                  <Image source={require('../images/level2N/4.png')} style={styles.image} />
                 </TouchableOpacity>
               </Animated.View>
               <Animated.View style={[styles.imageContainer, { transform: [{ translateY: bottomToTopValue }] }]}>
-                <TouchableOpacity onPress={() => press1(1)}>
+                <TouchableOpacity onPress={() => press0(0)}>
                   <Image source={require('../images/level2N/main.png')} style={styles.image} />
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
+          )}
+          {data.length === 4 && (
+            <View style={styles.firstContainer}>
+              <Animated.View style={[styles.imageContainer, { transform: [{ translateX: leftToRightValue }] }]}>
+                <TouchableOpacity onPress={() => press0(0)}>
+                  <Image source={require('../images/level2N/main.png')} style={styles.image} />
+                </TouchableOpacity>
+              </Animated.View>
+              <Animated.View style={[styles.imageContainer, { transform: [{ translateX: rightToLeftValue }] }]}>
+                <TouchableOpacity onPress={() => press1(1)}>
+                  <Image source={require('../images/level2N/5.png')} style={styles.image} />
                 </TouchableOpacity>
               </Animated.View>
             </View>
