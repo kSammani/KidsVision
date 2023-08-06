@@ -7,9 +7,9 @@ const Splash = ({ navigation }) => {
     <>
       <StatusBar translucent backgroundColor="#D3D3D3" />
       <View style={styles.container}>
-        {/* <Image source={require('../images/logo.png')} style={styles.img} /> */}
         <Text style={styles.txt1}>Level 1</Text>
         <Text style={styles.txt2}>Instructions</Text>
+        <Image source={require('../images/instructionL1CB/clickNum.png')} style={styles.img} />
         <Text style={styles.txt3}>Identify the number of images on each set & click on that number</Text>
           <View style={styles.touchContainer}>
             <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('Level1CB')}>
@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   img: {
-    width: 330,
-    height: 330,
-    marginBottom: 80
+    width: 300,
+    height: 300,
+    marginBottom: 20
   },
   image: {
     flex: 1,
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
     marginTop : 20,
+    marginBottom: 20,
   },
   txt3: {
     fontSize: 20,
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     marginTop : 20,
     padding : 20,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom:20,
   },
   buttonText: {
     fontSize: 25,

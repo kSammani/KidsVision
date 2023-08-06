@@ -7,9 +7,9 @@ const Splash = ({ navigation }) => {
     <>
       <StatusBar translucent backgroundColor="#D3D3D3" />
       <View style={styles.container}>
-        {/* <Image source={require('../images/logo.png')} style={styles.img} /> */}
         <Text style={styles.txt1}>Level 1</Text>
         <Text style={styles.txt2}>Instructions</Text>
+        <Image source={require('../images/instructionL1N/clickFruit.png')} style={styles.img} />
         <Text style={styles.txt3}>Identify the picture & click on the picture name.</Text>
           <View style={styles.touchContainer}>
             <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('Level1N')}>
@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   img: {
-    width: 330,
-    height: 330,
-    marginBottom: 80
+    width: 350,
+    height: 350,
+    marginBottom: 20
   },
   image: {
     flex: 1,
@@ -66,12 +66,13 @@ const styles = StyleSheet.create({
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
     marginTop : 20,
+    marginBottom : 20,
   },
   txt3: {
     fontSize: 20,
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
-    marginTop : 20,
+    // marginTop : 20,
     padding : 20,
     textAlign: 'center',
     marginBottom: 20,

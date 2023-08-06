@@ -7,9 +7,9 @@ const Splash = ({ navigation }) => {
     <>
       <StatusBar translucent backgroundColor="#D3D3D3" />
       <View style={styles.container}>
-        {/* <Image source={require('../images/logo.png')} style={styles.img} /> */}
         <Text style={styles.txt1}>Level 2</Text>
         <Text style={styles.txt2}>Instructions</Text>
+        <Image source={require('../images/instructionL2CB/L2CB.png')} style={styles.img} />
         <Text style={styles.txt3}> 1. A Color Palette with empty boxes can be seen.</Text>
         <Text style={styles.txt4}> 2. Drag & Drop the most closest colors into the empty boxes.</Text>
           <View style={styles.touchContainer}>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   img: {
     width: 330,
     height: 330,
-    marginBottom: 80
+    marginBottom: 10
   },
   image: {
     flex: 1,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
-    marginTop : 20,
+    // marginTop : 20,
     padding : 10,
     textAlign: 'center',
   },
