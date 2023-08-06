@@ -3,7 +3,7 @@ import { View, Text, Image, Animated, TouchableOpacity, StyleSheet, Dimensions }
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
-const IMAGE_WIDTH = 150;
+const IMAGE_WIDTH = 180;
 
 const AnimatedImageLoop = ({ navigation }) => {
   const [data, setData] = useState([]);
