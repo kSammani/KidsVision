@@ -117,7 +117,6 @@ const Level1N = ({ navigation }) => {
                     :
                     <>
                         <View style={styles.gameContainer}>
-                            <Text style={styles.Txt}>What is this Fruit?</Text>
 
                             <View style={styles.imgcontainer}>
                                 <Image source={images[currentImageIndex]} style={styles.img} />
