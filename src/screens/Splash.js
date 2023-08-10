@@ -9,7 +9,7 @@ const Splash = ({ navigation }) => {
       <View style={styles.container}>
         <Image source={require('../images/logo.png')} style={styles.img} />
           <View style={styles.touchContainer}>
-            <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('First')}>
+            <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('Info')}>
               <Text style={styles.buttonText}>Let's Start</Text>
             </TouchableOpacity>
           </View>
