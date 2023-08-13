@@ -77,15 +77,15 @@ const Level1CB = ({ navigation }) => {
         setClickedNumbers((prevClickedNumbers) => [...prevClickedNumbers, number]);
     };
 
-    const tryAgain = () => {
-        setDone(false);
-        setSeconds(initialSeconds);
-        setCurrentImageIndex(0);
-        setClickedNumbers([]);
-        setProgress(0);
-        setColorIndex(0);
-        setResult('');
-    }
+    // const tryAgain = () => {
+    //     setDone(false);
+    //     setSeconds(initialSeconds);
+    //     setCurrentImageIndex(0);
+    //     setClickedNumbers([]);
+    //     setProgress(0);
+    //     setColorIndex(0);
+    //     setResult('');
+    // }
 
     const next = async () => {
         try {
@@ -116,17 +116,38 @@ const Level1CB = ({ navigation }) => {
             justifyContent: 'center',
             alignItems: 'center',
         },
+        resultContainer: {
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
         imgcontainer: {
             alignItems: 'center',
             marginBottom: 40
         },
+        touchContainer: {
+            margin: 10,
+            height: 50,
+            width: 150,
+        },
+        tch: {
+            height: '100%',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 35,
+            padding: 10,
+            backgroundColor: '#565b64',
+        },
         Txt: {
-            padding: 20,
+            fontFamily: 'DreamingOutloudPro',
+            color: '#fff',
+            fontSize: 25,
+        },
+        rTxt: {
+            textAlign: 'center',
             fontFamily: 'DreamingOutloudPro',
             color: '#000',
             fontSize: 25,
-            marginTop: 20,
-            marginBottom: 20,
         },
         intrTxt: {
             textAlign: 'center',
@@ -164,13 +185,15 @@ const Level1CB = ({ navigation }) => {
             <View style={styles.container}>
                 {done ?
                     <>
-                        <TouchableOpacity onPress={tryAgain}>
-                            <Text style={styles.Txt}>Try Again?</Text>
-                        </TouchableOpacity>
+                        <View style={styles.resultContainer}>
+                            <Text style={styles.rTxt}>{result}</Text>
+                        </View>
 
-                        <TouchableOpacity onPress={next}>
-                            <Text style={styles.Txt}>Next</Text>
-                        </TouchableOpacity>
+                        <View style={styles.touchContainer}>
+                            <TouchableOpacity style={styles.tch} onPress={next}>
+                                <Text style={styles.Txt}>Next</Text>
+                            </TouchableOpacity>
+                        </View>
                     </>
                     :
                     <>

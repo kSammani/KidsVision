@@ -74,14 +74,14 @@ const Level1N = ({ navigation }) => {
         setClickedFruit((prevClickedFruit) => [...prevClickedFruit, fruit]);
     };
 
-    const tryAgain = () => {
-        setDone(false);
-        setSeconds(initialSeconds);
-        setCurrentImageIndex(0);
-        setClickedFruit([]);
-        setProgress(0);
-        setResult('');
-    }
+    // const tryAgain = () => {
+    //     setDone(false);
+    //     setSeconds(initialSeconds);
+    //     setCurrentImageIndex(0);
+    //     setClickedFruit([]);
+    //     setProgress(0);
+    //     setResult('');
+    // }
 
     const next = async () => {
         try {
@@ -101,18 +101,15 @@ const Level1N = ({ navigation }) => {
             <View style={styles.container}>
                 {done ?
                     <>
-                        <Text style={styles.endTxt}>End of Nearsightedness Test</Text>
-                        <TouchableOpacity onPress={tryAgain}>
-                            <Text style={styles.Txt}>Try Again?</Text>
-                        </TouchableOpacity>
+                        <View style={styles.resultContainer}>
+                            <Text style={styles.rTxt}>{result}</Text>
+                        </View>
 
-                        <TouchableOpacity onPress={next}>
-                            <Text style={styles.Txt}>Next</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity onPress={() => { navigation.navigate('First') }}>
-                            <Text style={styles.Txt}>Home</Text>
-                        </TouchableOpacity>
+                        <View style={styles.touchContainer}>
+                            <TouchableOpacity style={styles.tch} onPress={next}>
+                                <Text style={styles.Txt}>Next</Text>
+                            </TouchableOpacity>
+                        </View>
                     </>
                     :
                     <>
@@ -165,11 +162,40 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 20
     },
+    resultContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    touchContainer: {
+        margin: 10,
+        height: 50,
+        width: 150,
+    },
+    tch: {
+        height: '100%',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 35,
+        padding: 10,
+        backgroundColor: '#565b64',
+    },
+    Txt: {
+        fontFamily: 'DreamingOutloudPro',
+        color: '#fff',
+        fontSize: 25,
+    },
     endTxt: {
         textAlign: 'center',
         fontFamily: 'DreamingOutloudPro',
         color: '#000',
         fontSize: 35,
+    },
+    rTxt: {
+        textAlign: 'center',
+        fontFamily: 'DreamingOutloudPro',
+        color: '#000',
+        fontSize: 25,
     },
     intrTxt: {
         textAlign: 'center',
@@ -179,13 +205,6 @@ const styles = StyleSheet.create({
     },
     redTimerTxt: {
         color: 'red',
-    },
-    Txt: {
-        padding: 20,
-        fontFamily: 'DreamingOutloudPro',
-        color: '#000',
-        fontSize: 26,
-        marginTop: 20,
     },
     row: {
         flexDirection: 'row',

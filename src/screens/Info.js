@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View,Text, TextInput} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-simple-toast';
 
 const Info = ({navigation}) => {
   const [text, onChangeText] = React.useState('');
@@ -9,16 +10,20 @@ const Info = ({navigation}) => {
 
   const save = async () => {
     try {
-      await AsyncStorage.setItem(
-        'name',
-        text,
-      );
-
-      await AsyncStorage.setItem(
-        'age',
-        number,
-      );
-      navigation.navigate('First');
+      if (text !== '' && number !== '') {
+        await AsyncStorage.setItem(
+          'name',
+          text,
+        );
+  
+        await AsyncStorage.setItem(
+          'age',
+          number,
+        );
+        navigation.navigate('First');
+      }else{
+        Toast.show('Field Must Not Be Empty', Toast.SHORT);
+      }
     } catch (error) {
       console.log(error);
     }

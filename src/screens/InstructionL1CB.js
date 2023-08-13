@@ -9,13 +9,15 @@ const Splash = ({ navigation }) => {
       <View style={styles.container}>
         <Text style={styles.txt1}>Level 1</Text>
         <Text style={styles.txt2}>Instructions</Text>
-        <Image source={require('../images/instructionL1CB/clickNum.png')} style={styles.img} />
+        <View style={styles.imgcontainer}>
+          <Image source={require('../images/instructionL1CB/clickNum.png')} style={styles.img} />
+        </View>
         <Text style={styles.txt3}>Identify the number of images on each set & click on that number</Text>
-          <View style={styles.touchContainer}>
-            <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('Level1CB')}>
-              <Text style={styles.buttonText}>Play Now</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={styles.touchContainer}>
+          <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('Level1CB')}>
+            <Text style={styles.buttonText}>Play Now</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );
@@ -30,10 +32,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  imgcontainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   img: {
     width: 300,
     height: 300,
-    marginBottom: 20
+    resizeMode: 'contain',
   },
   image: {
     flex: 1,
@@ -59,23 +65,23 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
-    marginTop : 20,
+    marginTop: 20,
   },
   txt2: {
     fontSize: 30,
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
-    marginTop : 20,
+    marginTop: 20,
     marginBottom: 20,
   },
   txt3: {
     fontSize: 20,
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
-    marginTop : 20,
-    padding : 20,
+    marginTop: 20,
+    padding: 20,
     textAlign: 'center',
-    marginBottom:20,
+    marginBottom: 20,
   },
   buttonText: {
     fontSize: 25,

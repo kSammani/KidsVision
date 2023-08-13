@@ -135,17 +135,24 @@ const AnimatedImageLoop = ({ navigation }) => {
       <View style={{ width: `${progress}%`, height: '5%', backgroundColor: '#000000' }}></View>
       {done ?
         <View style={styles.finalContainer}>
-          <TouchableOpacity onPress={tryAgain}>
-            <Text style={styles.Txt}>Try Again?</Text>
-          </TouchableOpacity>
+          <Text style={styles.endTxt}>Great Job Kid {'\n'} You've Finished the Game!</Text>
+          <View style={styles.finalSubContainer}>
+            <Text style={styles.rTxt}>{result}</Text>
 
-          <TouchableOpacity onPress={next}>
-            <Text style={styles.Txt}>Next</Text>
-          </TouchableOpacity>
+            <View style={styles.finalBtnContainer}>
+            <View style={styles.touchContainer}>
+              <TouchableOpacity style={styles.tch} onPress={next}>
+                <Text style={styles.Txt}>Final Score</Text>
+              </TouchableOpacity>
+            </View>
 
-          <TouchableOpacity onPress={() => { navigation.navigate('First') }}>
-            <Text style={styles.Txt}>Home</Text>
-          </TouchableOpacity>
+            <View style={styles.touchContainer}>
+            <TouchableOpacity style={styles.tch} onPress={() => { navigation.navigate('First') }}>
+              <Text style={styles.Txt}>Home</Text>
+            </TouchableOpacity>
+            </View>
+            </View>
+          </View>
         </View>
         :
         <>
@@ -261,13 +268,37 @@ const styles = StyleSheet.create({
   timerContainer: {
     paddingBottom: '5%',
   },
+  finalSubContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  finalBtnContainer: {
+    flexDirection: 'row',
+  },
+  touchContainer: {
+    margin: 10,
+    height: 50,
+    width: 150,
+  },
+  tch: {
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 35,
+    padding: 10,
+    backgroundColor: '#565b64',
+  },
   Txt: {
-    padding: 20,
     fontFamily: 'DreamingOutloudPro',
-    color: '#A36A00',
-    fontSize: 22,
-    marginTop: 20,
-    marginBottom: 20,
+    color: '#fff',
+    fontSize: 25,
+  },
+  rTxt: {
+    textAlign: 'center',
+    fontFamily: 'DreamingOutloudPro',
+    color: '#000',
+    fontSize: 25,
   },
   intrTxt: {
     textAlign: 'center',

@@ -16,11 +16,12 @@ const Test = ({ navigation }) => {
     const newData = [...data];
     const [done, setDone] = useState(false);
     const [result, setResult] = useState('');
+
     const initialSeconds = 120;
     const [seconds, setSeconds] = useState(initialSeconds);
 
     useEffect(() => {
-        if (seconds <= 0){
+        if (seconds <= 0) {
             setDone(true);
             return;
         }
@@ -56,17 +57,17 @@ const Test = ({ navigation }) => {
         console.log('Result ', count, '/', data.length);
     }, [data]);
 
-    const tryAgain = () => {
-        setDone(false);
-        setSeconds(initialSeconds);
-        setStaged1([]);
-        setStaged2([]);
-        setStaged3([]);
-        setStaged4([]);
-        setStaged5([]);
-        setData(['null', 'null', 'null', 'null', 'null']);
-        setResult('');
-    }
+    // const tryAgain = () => {
+    //     setDone(false);
+    //     setSeconds(initialSeconds);
+    //     setStaged1([]);
+    //     setStaged2([]);
+    //     setStaged3([]);
+    //     setStaged4([]);
+    //     setStaged5([]);
+    //     setData(['null', 'null', 'null', 'null', 'null']);
+    //     setResult('');
+    // }
 
     const next = async () => {
         try {
@@ -85,18 +86,24 @@ const Test = ({ navigation }) => {
         <>
             {done ?
                 <View style={styles.finalContainer}>
-                    <Text style={styles.endTxt}>End of  Color Blindness Test</Text>
-                    <TouchableOpacity onPress={tryAgain}>
-                        <Text style={styles.Txt}>Try Again?</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.endTxt}>Great Job Kid {'\n'} You've Finished the Game!</Text>
+                    <View style={styles.finalSubContainer}>
+                        <Text style={styles.rTxt}>{result}</Text>
 
-                    <TouchableOpacity onPress={next}>
-                        <Text style={styles.Txt}>Nearsightedness Test</Text>
-                    </TouchableOpacity>
+                        <View style={styles.finalBtnContainer}>
+                            <View style={styles.touchContainer}>
+                                <TouchableOpacity style={styles.tch} onPress={next}>
+                                    <Text style={styles.nTxt}>Nearsightedness Test</Text>
+                                </TouchableOpacity>
+                            </View>
 
-                    <TouchableOpacity onPress={() => { navigation.navigate('First') }}>
-                        <Text style={styles.Txt}>Home</Text>
-                    </TouchableOpacity>
+                            <View style={styles.touchContainer}>
+                                <TouchableOpacity style={styles.tch} onPress={() => { navigation.navigate('First') }}>
+                                    <Text style={styles.Txt}>Home</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
                 </View>
                 :
                 <View style={styles.mainContainer}>
@@ -436,9 +443,19 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         backgroundColor: '#FAF7F0',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         padding: 20
+    },
+    finalSubContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    rTxt: {
+        textAlign: 'center',
+        fontFamily: 'DreamingOutloudPro',
+        color: '#000',
+        fontSize: 25,
     },
     timerTxt: {
         textAlign: 'center',
@@ -453,15 +470,34 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'DreamingOutloudPro',
         color: '#000',
-        fontSize: 35,
+        fontSize: 30,
+    },
+    finalBtnContainer: {
+        flexDirection: 'row',
+    },
+    touchContainer: {
+        margin: 10,
+        height: 50,
+        width: 150,
+    },
+    tch: {
+        height: '100%',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 35,
+        padding: 10,
+        backgroundColor: '#565b64',
     },
     Txt: {
-        padding: 20,
         fontFamily: 'DreamingOutloudPro',
-        color: '#000',
+        color: '#fff',
         fontSize: 25,
-        marginTop: 20,
-
+    },
+    nTxt: {
+        fontFamily: 'DreamingOutloudPro',
+        color: '#fff',
+        fontSize: 10,
     },
     lt: {
         position: 'absolute',
