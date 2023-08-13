@@ -110,7 +110,7 @@ const Test = ({ navigation }) => {
 
                                 <View style={styles.touchContainer}>
                                     <TouchableOpacity style={styles.tch} onPress={next}>
-                                        <Text style={styles.nTxt}>Nearsightedness Test</Text>
+                                        <Text style={styles.nTxt}>Next</Text>
                                     </TouchableOpacity>
                                 </View>
 
@@ -522,7 +522,7 @@ const styles = StyleSheet.create({
     nTxt: {
         fontFamily: 'DreamingOutloudPro',
         color: '#fff',
-        fontSize: 10,
+        fontSize: 25,
     },
     lt: {
         position: 'absolute',
