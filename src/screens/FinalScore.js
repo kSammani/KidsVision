@@ -32,7 +32,7 @@ const FinalScore = ({ navigation }) => {
           setCbl2(cb2);
           setNl1(n1);
           setNl2(n2);
-          // setAnim(true);
+          setAnim(true);
         } else {
           setDone(true);
           console.log("No saved state");
@@ -46,6 +46,16 @@ const FinalScore = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {anim ?
+        <>
+          <View style={styles.ltView}>
+            <Lottie
+              style={styles.lottie}
+              source={require('../anim/celeb2.json')}
+              autoPlay
+              loop />
+          </View>
+        </> : <></>}
       {done ?
         <>
           <Text style={styles.Txt}>No Prevoius Saved Data</Text>
@@ -71,21 +81,6 @@ const FinalScore = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </>}
-
-      {/* // {anim ?
-      //               <>
-      //                   <View style={styles.lt}>
-      //                       <Lottie
-      //                           style={{ height: '100%' }}
-      //                           source={require('../anim/celeb2.json')}
-      //                           autoPlay
-      //                           loop />
-      //                       <Lottie
-      //                           source={require('../anim/celeb1.json')}
-      //                           autoPlay
-      //                           loop />
-      //                   </View>
-      //               </> : <></>} */}
     </View>
   )
 }
@@ -132,6 +127,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: 'DreamingOutloudPro',
     color: '#fff'
+  },
+  ltView: {
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+  },
+  lottie: {
+    flex: 1,
   },
 });
 

@@ -3,6 +3,8 @@ import { StyleSheet, View, Image, Text, Animated } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import Lottie from 'lottie-react-native';
+
 const Level1N = ({ navigation }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [clickedFruit, setClickedFruit] = useState([]);
@@ -101,14 +103,23 @@ const Level1N = ({ navigation }) => {
             <View style={styles.container}>
                 {done ?
                     <>
-                        <View style={styles.resultContainer}>
-                            <Text style={styles.rTxt}>{result}</Text>
+                        <View style={styles.ltView}>
+                            <Lottie
+                                style={styles.lottie}
+                                source={require('../anim/celeb1.json')}
+                                autoPlay
+                                loop />
                         </View>
+                        <View style={styles.finalContainer}>
+                            <View style={styles.resultContainer}>
+                                <Text style={styles.rTxt}>{result}</Text>
+                            </View>
 
-                        <View style={styles.touchContainer}>
-                            <TouchableOpacity style={styles.tch} onPress={next}>
-                                <Text style={styles.Txt}>Next</Text>
-                            </TouchableOpacity>
+                            <View style={styles.touchContainer}>
+                                <TouchableOpacity style={styles.tch} onPress={next}>
+                                    <Text style={styles.Txt}>Next</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </>
                     :
@@ -149,7 +160,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "column",
-        justifyContent: 'center',
         alignItems: 'center',
         padding: 20
     },
@@ -165,6 +175,12 @@ const styles = StyleSheet.create({
     resultContainer: {
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    finalContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: '40%',
     },
     touchContainer: {
         margin: 10,
@@ -225,5 +241,16 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontFamily: 'DreamingOutloudPro',
         color: 'black'
+    },
+    ltView: {
+        height: '60%',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+    },
+    lottie: {
+        height: '100%',
+        width: '100%',
     },
 });

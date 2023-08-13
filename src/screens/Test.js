@@ -4,6 +4,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { DraxProvider, DraxView } from 'react-native-drax';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import Lottie from 'lottie-react-native';
+
 const Test = ({ navigation }) => {
     const [staged1, setStaged1] = useState([]);
     const [staged2, setStaged2] = useState([]);
@@ -85,26 +87,37 @@ const Test = ({ navigation }) => {
     return (
         <>
             {done ?
-                <View style={styles.finalContainer}>
-                    <Text style={styles.endTxt}>Great Job Kid {'\n'} You've Finished the Game!</Text>
-                    <View style={styles.finalSubContainer}>
-                        <Text style={styles.rTxt}>{result}</Text>
+                <>
+                    <View style={styles.ltView}>
+                        <Lottie
+                            style={styles.lottie}
+                            source={require('../anim/celeb1.json')}
+                            autoPlay
+                            loop />
+                    </View>
+                    <View style={styles.finalContainer}>
+                        <Text style={styles.endTxt}>Great Job Kid {'\n'} You've Finished the Game!</Text>
+                        <View style={styles.finalSubContainer}>
+                            <Text style={styles.rTxt}>{result}</Text>
 
-                        <View style={styles.finalBtnContainer}>
-                            <View style={styles.touchContainer}>
-                                <TouchableOpacity style={styles.tch} onPress={next}>
-                                    <Text style={styles.nTxt}>Nearsightedness Test</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <View style={styles.finalBtnContainer}>
 
-                            <View style={styles.touchContainer}>
-                                <TouchableOpacity style={styles.tch} onPress={() => { navigation.navigate('First') }}>
-                                    <Text style={styles.Txt}>Home</Text>
-                                </TouchableOpacity>
+                                <View style={styles.touchContainer}>
+                                    <TouchableOpacity style={styles.tch} onPress={() => { navigation.navigate('First') }}>
+                                        <Text style={styles.Txt}>Home</Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={styles.touchContainer}>
+                                    <TouchableOpacity style={styles.tch} onPress={next}>
+                                        <Text style={styles.nTxt}>Nearsightedness Test</Text>
+                                    </TouchableOpacity>
+                                </View>
+
                             </View>
                         </View>
                     </View>
-                </View>
+                </>
                 :
                 <View style={styles.mainContainer}>
                     <View style={styles.draxContainer}>
@@ -441,15 +454,27 @@ const styles = StyleSheet.create({
     },
     finalContainer: {
         flex: 1,
-        flexDirection: "column",
-        backgroundColor: '#FAF7F0',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        padding: 20
-    },
-    finalSubContainer: {
         alignItems: 'center',
         justifyContent: 'center',
+        paddingTop: '80%',
+        padding: 10
+    },
+    finalSubContainer: {
+        flex: 1,
+        alignItems: 'center',
+        paddingTop: '20%',
+        padding: 20,
+    },
+    ltView: {
+        height: '60%',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+    },
+    lottie: {
+        height: '100%',
+        width: '100%',
     },
     rTxt: {
         textAlign: 'center',

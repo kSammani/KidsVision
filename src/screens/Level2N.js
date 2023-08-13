@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, Animated, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import Lottie from 'lottie-react-native';
+
 const { width, height } = Dimensions.get('window');
 const IMAGE_WIDTH = 180;
 
@@ -134,26 +136,37 @@ const AnimatedImageLoop = ({ navigation }) => {
     <View style={styles.mainContainer}>
       <View style={{ width: `${progress}%`, height: '5%', backgroundColor: '#000000' }}></View>
       {done ?
-        <View style={styles.finalContainer}>
-          <Text style={styles.endTxt}>Great Job Kid {'\n'} You've Finished the Game!</Text>
-          <View style={styles.finalSubContainer}>
-            <Text style={styles.rTxt}>{result}</Text>
+        <>
+          <View style={styles.ltView}>
+            <Lottie
+              style={styles.lottie}
+              source={require('../anim/celeb1.json')}
+              autoPlay
+              loop />
+          </View>
+          <View style={styles.finalContainer}>
+            <Text style={styles.endTxt}>Great Job Kid {'\n'} You've Finished the Game!</Text>
+            <View style={styles.finalSubContainer}>
+              <Text style={styles.rTxt}>{result}</Text>
 
-            <View style={styles.finalBtnContainer}>
-            <View style={styles.touchContainer}>
-              <TouchableOpacity style={styles.tch} onPress={next}>
-                <Text style={styles.Txt}>Final Score</Text>
-              </TouchableOpacity>
-            </View>
+              <View style={styles.finalBtnContainer}>
 
-            <View style={styles.touchContainer}>
-            <TouchableOpacity style={styles.tch} onPress={() => { navigation.navigate('First') }}>
-              <Text style={styles.Txt}>Home</Text>
-            </TouchableOpacity>
-            </View>
+                <View style={styles.touchContainer}>
+                  <TouchableOpacity style={styles.tch} onPress={() => { navigation.navigate('First') }}>
+                    <Text style={styles.Txt}>Home</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={styles.touchContainer}>
+                  <TouchableOpacity style={styles.tch} onPress={next}>
+                    <Text style={styles.Txt}>Final Score</Text>
+                  </TouchableOpacity>
+                </View>
+
+              </View>
             </View>
           </View>
-        </View>
+        </>
         :
         <>
           {data.length === 0 && (
@@ -241,10 +254,10 @@ const styles = StyleSheet.create({
   },
   finalContainer: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 20
+    justifyContent: 'center',
+    paddingTop: '80%',
+    padding: 10
   },
   firstContainer: {
     flex: 1,
@@ -269,8 +282,10 @@ const styles = StyleSheet.create({
     paddingBottom: '5%',
   },
   finalSubContainer: {
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: '20%',
+    padding: 20,
   },
   finalBtnContainer: {
     flexDirection: 'row',
@@ -294,6 +309,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 25,
   },
+  endTxt: {
+    textAlign: 'center',
+    fontFamily: 'DreamingOutloudPro',
+    color: '#000',
+    fontSize: 30,
+  },
   rTxt: {
     textAlign: 'center',
     fontFamily: 'DreamingOutloudPro',
@@ -305,6 +326,17 @@ const styles = StyleSheet.create({
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
     fontSize: 20,
+  },
+  ltView: {
+    height: '60%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+  },
+  lottie: {
+    height: '100%',
+    width: '100%',
   },
 });
 

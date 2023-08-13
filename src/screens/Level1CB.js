@@ -3,6 +3,8 @@ import { StyleSheet, View, Image, Text, Animated, StatusBar } from 'react-native
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import Lottie from 'lottie-react-native';
+
 const Level1CB = ({ navigation }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [clickedNumbers, setClickedNumbers] = useState([]);
@@ -107,9 +109,14 @@ const Level1CB = ({ navigation }) => {
         container: {
             flex: 1,
             flexDirection: "column",
-            justifyContent: 'center',
             alignItems: 'center',
             padding: 20
+        },
+        finalContainer: {
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingTop: '40%',
         },
         gameContainer: {
             flex: 1,
@@ -176,6 +183,17 @@ const Level1CB = ({ navigation }) => {
             fontFamily: 'DreamingOutloudPro',
             color: 'black'
         },
+        ltView: {
+            height: '60%',
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+        },
+        lottie: {
+            height: '100%',
+            width: '100%',
+        },
     });
 
     return (
@@ -185,14 +203,23 @@ const Level1CB = ({ navigation }) => {
             <View style={styles.container}>
                 {done ?
                     <>
-                        <View style={styles.resultContainer}>
-                            <Text style={styles.rTxt}>{result}</Text>
+                        <View style={styles.ltView}>
+                            <Lottie
+                                style={styles.lottie}
+                                source={require('../anim/celeb1.json')}
+                                autoPlay
+                                loop />
                         </View>
+                        <View style={styles.finalContainer}>
+                            <View style={styles.resultContainer}>
+                                <Text style={styles.rTxt}>{result}</Text>
+                            </View>
 
-                        <View style={styles.touchContainer}>
-                            <TouchableOpacity style={styles.tch} onPress={next}>
-                                <Text style={styles.Txt}>Next</Text>
-                            </TouchableOpacity>
+                            <View style={styles.touchContainer}>
+                                <TouchableOpacity style={styles.tch} onPress={next}>
+                                    <Text style={styles.Txt}>Next</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </>
                     :
