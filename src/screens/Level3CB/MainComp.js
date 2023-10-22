@@ -24,11 +24,12 @@ const MainComp = ({ imageSource, pathValue, quote, navigation, nextScreen }) => 
     onPanResponderMove: (e, gestureState) => {
       if (isDrawing.current) {
         path.current.push({ x: gestureState.moveX, y: gestureState.moveY });
+        setDrawnPaths([...drawnPaths, path.current]);
       }
     },
     onPanResponderRelease: () => {
       isDrawing.current = false;
-      setDrawnPaths([...drawnPaths, path.current]);
+      //setDrawnPaths([...drawnPaths, path.current]);
       setIsCompleted(true);
       setSeconds(0);
       setResetTimer(true);

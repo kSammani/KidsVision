@@ -14,6 +14,7 @@ import Level3CBLevel2 from './src/screens/Level3CB/Level2';
 import Level3CBLevel3 from './src/screens/Level3CB/Level3';
 import Level3CBLevel4 from './src/screens/Level3CB/Level4';
 import Level3CBLevel5 from './src/screens/Level3CB/Level5';
+import Level3CBSummary from './src/screens/Level3CB/Summary';
 
 import Info from './src/screens/Info';
 import Level1N from './src/screens/Level1N';
@@ -37,6 +38,7 @@ export default function App() {
         <Stack.Screen name="Level3CBLevel3" component={Level3CBLevel3} options={{ headerShown: false }} />
         <Stack.Screen name="Level3CBLevel4" component={Level3CBLevel4} options={{ headerShown: false }} />
         <Stack.Screen name="Level3CBLevel5" component={Level3CBLevel5} options={{ headerShown: false }} />
+        <Stack.Screen name="Level3CBSummary" component={Level3CBSummary} options={{ headerShown: false }} />
         <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
         <Stack.Screen name="Info" component={Info} options={{ headerShown: false }} />
         <Stack.Screen name="First" component={First} options={{ headerShown: false }} />
@@ -44,7 +46,7 @@ export default function App() {
         <Stack.Screen name="Level1CB" component={Level1CB} options={{ headerShown: false }} />
         <Stack.Screen name="InstructionL2CB" component={InstructionL2CB} options={{ headerShown: false }} />
         <Stack.Screen name="Level2CB" component={Level2CB} options={{ headerShown: false }} />
-        {/* mul 6 methanat genna */}
+        {/* mul 7 methanat genna */}
         <Stack.Screen name="Instructions" component={Instructions} options={{ headerShown: false }} />
         <Stack.Screen name="InstructionL1N" component={InstructionL1N} options={{ headerShown: false }} />
         <Stack.Screen name="Level1N" component={Level1N} options={{ headerShown: false }} />

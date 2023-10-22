@@ -16,7 +16,7 @@ const Level5 = ({ navigation }) => {
     }
   }
   return (
-    <MainComp imageSource={require('../../images/level3CB/ish5.png')} pathValue={saveValue} quote={quote} navigation={navigation} nextScreen="FinalScore" />
+    <MainComp imageSource={require('../../images/level3CB/ish5.png')} pathValue={saveValue} quote={quote} navigation={navigation} nextScreen="Level3CBSummary" />
   );
 };
 
