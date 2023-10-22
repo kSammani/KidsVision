@@ -3,6 +3,7 @@ import MainComp from './MainComp';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Level5 = ({ navigation }) => {
+  const quote = 'Seems like child is in Good Hands!';
   const saveValue = async (value) => {
     try {
       console.log(value);
@@ -15,7 +16,7 @@ const Level5 = ({ navigation }) => {
     }
   }
   return (
-    <MainComp imageSource={require('../../images/level3CB/ish5.png')} pathValue={saveValue} navigation={navigation} nextScreen="FinalScore" />
+    <MainComp imageSource={require('../../images/level3CB/ish5.png')} pathValue={saveValue} quote={quote} navigation={navigation} nextScreen="FinalScore" />
   );
 };
 

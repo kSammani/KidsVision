@@ -3,7 +3,7 @@ import { View, PanResponder, Image, StyleSheet, TouchableOpacity, Text } from 'r
 import { BlurView } from '@react-native-community/blur';
 import Timer from '../helpComp/Timer';
 
-const MainComp = ({ imageSource, pathValue, navigation, nextScreen }) => {
+const MainComp = ({ imageSource, pathValue, quote, navigation, nextScreen }) => {
   const path = useRef([]);
   const isDrawing = useRef(false);
   const [drawnPaths, setDrawnPaths] = useState([]);
@@ -108,7 +108,7 @@ const MainComp = ({ imageSource, pathValue, navigation, nextScreen }) => {
         {(isDone || isCompleted) && (
           <>
             <View style={styles.textContainer}>
-              <Text style={styles.text}>It seems like Your child is {determinePath().message}</Text>
+              <Text style={styles.text}>{quote}</Text>
             </View>
             <View style={styles.btnContainer}>
               <View style={styles.btnRow}>
