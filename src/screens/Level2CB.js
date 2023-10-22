@@ -78,7 +78,7 @@ const Test = ({ navigation }) => {
                 result,
             );
             console.log('Result ', result);
-            navigation.navigate('Instructions');
+            navigation.navigate('InstructionL3CB');
         } catch (error) {
             console.log(error);
         }

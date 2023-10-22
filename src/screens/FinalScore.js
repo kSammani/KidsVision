@@ -11,6 +11,7 @@ const FinalScore = ({ navigation }) => {
   const [age, setAge] = useState('');
   const [cbl1, setCbl1] = useState('');
   const [cbl2, setCbl2] = useState('');
+  const [cbl3, setCbl3] = useState('');
   const [nl1, setNl1] = useState('');
   const [nl2, setNl2] = useState('');
 
@@ -25,7 +26,12 @@ const FinalScore = ({ navigation }) => {
         const cb2 = await AsyncStorage.getItem("L2CB");
         const n1 = await AsyncStorage.getItem("L1N");
         const n2 = await AsyncStorage.getItem("L2N");
-        if (nm !== null || ag !== null || cb1 !== null || cb2 !== null || n1 !== null || n2 !== null) {
+        const cb3l1 = await AsyncStorage.getItem("L3CB-L1");
+        const cb3l2 = await AsyncStorage.getItem("L3CB-L2");
+        const cb3l3 = await AsyncStorage.getItem("L3CB-L3");
+        const cb3l4 = await AsyncStorage.getItem("L3CB-L4");
+        const cb3l5 = await AsyncStorage.getItem("L3CB-L5");
+        if (nm !== null || ag !== null || cb1 !== null || cb2 !== null || n1 !== null || n2 !== null || cb3l1 !== null) {
           setName(nm);
           setAge(ag);
           setCbl1(cb1);
@@ -33,6 +39,10 @@ const FinalScore = ({ navigation }) => {
           setNl1(n1);
           setNl2(n2);
           setAnim(true);
+
+          //calculate CBL3 values
+          const resultsCBL3 = parseInt(cb3l1) + parseInt(cb3l2) + parseInt(cb3l3) + parseInt(cb3l4) + parseInt(cb3l5);
+          setCbl3(`Colorblindness Level 03 Results ${resultsCBL3} / 5`)
         } else {
           setDone(true);
           console.log("No saved state");
@@ -73,6 +83,7 @@ const FinalScore = ({ navigation }) => {
           </View>
           <Text style={styles.rTxt}>{cbl1}</Text>
           <Text style={styles.rTxt}>{cbl2}</Text>
+          <Text style={styles.rTxt}>{cbl3}</Text>
           <Text style={styles.rTxt}>{nl1}</Text>
           <Text style={styles.rTxt}>{nl2}</Text>
           <View style={styles.touchContainer}>

@@ -2,27 +2,28 @@ import React from 'react';
 import { StyleSheet, View, Image, Text, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Splash = ({ navigation }) => {
+const InstructionL3CB = ({ navigation }) => {
   return (
     <>
       <StatusBar translucent backgroundColor="#D3D3D3" />
       <View style={styles.container}>
-        <Text style={styles.txt1}>Level 2</Text>
+        <Text style={styles.txt1}>Level 3</Text>
         <Text style={styles.txt2}>Instructions</Text>
-        <Image source={require('../images/instructionL2CB/L2CB.png')} style={styles.img} />
-        <Text style={styles.txt3}> 1. A Color Palette with empty boxes can be seen.</Text>
-        <Text style={styles.txt4}> 2. Drag & Drop the most closest colors into the empty boxes.</Text>
-          <View style={styles.touchContainer}>
-            <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('Level2CB')}>
-              <Text style={styles.buttonText}>Play Now</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={styles.imgcontainer}>
+          <Image source={require('../images/instructionL3CB/instruction.png')} style={styles.img} />
+        </View>
+        <Text style={styles.txt3}>Identify the hidden path of given images and draw them</Text>
+        <View style={styles.touchContainer}>
+          <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('Level3CBLevel1')}>
+            <Text style={styles.buttonText}>Play Now</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );
 }
 
-export default Splash;
+export default InstructionL3CB;
 
 const styles = StyleSheet.create({
   container: {
@@ -31,10 +32,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  imgcontainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   img: {
-    width: 330,
-    height: 330,
-    marginBottom: 10
+    width: 300,
+    height: 300,
+    resizeMode: 'contain',
   },
   image: {
     flex: 1,
@@ -60,29 +65,23 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
-    marginTop : 20,
+    marginTop: 20,
   },
   txt2: {
     fontSize: 30,
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
-    marginTop : 20,
+    marginTop: 20,
+    marginBottom: 20,
   },
   txt3: {
     fontSize: 20,
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
-    // marginTop : 20,
-    padding : 10,
+    marginTop: 20,
+    padding: 20,
     textAlign: 'center',
-  },
-  txt4: {
-    fontSize: 20,
-    fontFamily: 'DreamingOutloudPro',
-    color: '#000',
-    padding : 10,
-    textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
   },
   buttonText: {
     fontSize: 25,
