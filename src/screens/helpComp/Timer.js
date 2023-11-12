@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 
-const Timer = ({ setDone, initialSeconds, resetTimer, onReset }) => {
+const Timer = ({ setDone, initialSeconds, updatedTime, resetTimer, onReset }) => {
     const [seconds, setSeconds] = useState(initialSeconds);
 
     useEffect(() => {
         if (resetTimer) {
+            updatedTime(seconds);
             setSeconds(initialSeconds);
             onReset();
             setDone(false);

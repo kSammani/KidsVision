@@ -3,14 +3,15 @@ import { View, PanResponder, Image, StyleSheet, TouchableOpacity, Text } from 'r
 import { BlurView } from '@react-native-community/blur';
 import Timer from '../helpComp/Timer';
 
-const MainComp = ({ imageSource, pathValue, quote, navigation, nextScreen }) => {
+const MainComp = ({ startTime, imageSource, pathValue, quote, navigation, nextScreen }) => {
   const path = useRef([]);
   const isDrawing = useRef(false);
   const [drawnPaths, setDrawnPaths] = useState([]);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
-  const [seconds, setSeconds] = useState(120);
+  const [updatedTime, setUpdatedTime] = useState(0);
+  const [seconds, setSeconds] = useState(startTime);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => !isDone && !isCompleted,
@@ -52,14 +53,18 @@ const MainComp = ({ imageSource, pathValue, quote, navigation, nextScreen }) => 
     }
   }
 
+  // const updatedTime = (currentTime) => {
+  //   setTimeToPass(currentTime);
+  // };
+
   const onYesClick = () => {
     pathValue(determinePath().value);
-    navigation.navigate(nextScreen);
+    navigation.navigate(nextScreen, { startTime: updatedTime });
   }
 
   const onNoClick = () => {
     pathValue(0);
-    navigation.navigate(nextScreen);
+    navigation.navigate(nextScreen, { startTime: updatedTime });
   }
 
   const tryAgain = () => {
@@ -68,7 +73,7 @@ const MainComp = ({ imageSource, pathValue, quote, navigation, nextScreen }) => 
     setIsCompleted(false);
     setDrawnPaths([]);
     setResetTimer(true);
-    setSeconds(120);
+    setSeconds(startTime);
   };
 
   const renderPaths = () => {
@@ -135,7 +140,7 @@ const MainComp = ({ imageSource, pathValue, quote, navigation, nextScreen }) => 
           </>
         )}
       </View>
-      <Timer setDone={setIsDone} initialSeconds={seconds} resetTimer={resetTimer} onReset={() => setResetTimer(false)} />
+      <Timer setDone={setIsDone} initialSeconds={seconds} updatedTime={setUpdatedTime} resetTimer={resetTimer} onReset={() => setResetTimer(false)} />
     </View>
   );
 };
