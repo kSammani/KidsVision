@@ -17,7 +17,7 @@ const Test = ({ navigation }) => {
     const [initialData, setInitialData] = useState(['Blue', 'Red', 'Yellow', 'Green1', 'Green2']);
     const newData = [...data];
     const [done, setDone] = useState(false);
-    const [result, setResult] = useState('');
+    const [result, setResult] = useState(0);
     const [timeSpent, setTimeSpent] = useState(0);
     const [isRequestTime, setIsRequestTime] = useState(false);
     const [seconds, setSeconds] = useState(Constants.INITIAL_TIME);
@@ -47,7 +47,7 @@ const Test = ({ navigation }) => {
             }
         }
         setIsRequestTime(true);
-        setResult(`Color Blindness Level 02 Results ${count} / ${data.length}`)
+        setResult(count)
         console.log('Result ', count, '/', data.length);
     }, [data]);
 

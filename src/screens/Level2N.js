@@ -10,7 +10,7 @@ const IMAGE_WIDTH = 180;
 
 const AnimatedImageLoop = ({ navigation }) => {
   const [data, setData] = useState([]);
-  const [result, setResult] = useState('');
+  const [result, setResult] = useState(0);
   const [done, setDone] = useState(false);
   const [progress, setProgress] = useState(0);
   const [timeSpent, setTimeSpent] = useState(0);
@@ -76,7 +76,7 @@ const AnimatedImageLoop = ({ navigation }) => {
           count++;
         }
       }
-      setResult(`Nearsightedness Level 02 Results ${count} / ${data.length}`)
+      setResult(count)
       setDone(true);
       setSeconds(0);
     }

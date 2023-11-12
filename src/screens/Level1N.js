@@ -11,7 +11,7 @@ const Level1N = ({ navigation }) => {
     const [clickedFruit, setClickedFruit] = useState([]);
     const [done, setDone] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [result, setResult] = useState('');
+    const [result, setResult] = useState(0);
     const [timeSpent, setTimeSpent] = useState(0);
     const [isRequestTime, setIsRequestTime] = useState(false);
     const [seconds, setSeconds] = useState(Constants.INITIAL_TIME);
@@ -47,7 +47,7 @@ const Level1N = ({ navigation }) => {
             }
         }
         setIsRequestTime(true);
-        setResult(`Nearsightedness Level 01 Results ${count} / ${images.length}`)
+        setResult(count)
         console.log('Result ', count, '/', images.length);
     }, [clickedFruit]);
 

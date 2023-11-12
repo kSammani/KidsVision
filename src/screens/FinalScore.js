@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Lottie from 'lottie-react-native';
 
 const FinalScore = ({ navigation }) => {
-  const [done, setDone] = useState(false);
+  const [available, isAvailable] = useState(false);
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [cbl1, setCbl1] = useState('');
@@ -15,6 +15,13 @@ const FinalScore = ({ navigation }) => {
   const [nl1, setNl1] = useState('');
   const [nl2, setNl2] = useState('');
 
+  const [sumOfCB, setSumOfCB] = useState(0);
+  const [sumOfCBTime, setSumOfCBTime] = useState(0);
+  const [sumOfNS, setSumOfNS] = useState(0);
+  const [sumOfNSTime, setSumOfNSTime] = useState(0);
+
+  const [threatLevel, setThreatLevel] = useState('');
+
   const [anim, setAnim] = useState(false);
 
   useEffect(() => {
@@ -22,29 +29,48 @@ const FinalScore = ({ navigation }) => {
       try {
         const nm = await AsyncStorage.getItem("name");
         const ag = await AsyncStorage.getItem("age");
+
         const cb1 = await AsyncStorage.getItem("L1CB");
+        const cb1Time = await AsyncStorage.getItem("L1CBTime");
+
         const cb2 = await AsyncStorage.getItem("L2CB");
+        const cb2Time = await AsyncStorage.getItem("L2CBTime");
+
+        const cb3 = await AsyncStorage.getItem("L3CB");
+        const cb3Time = await AsyncStorage.getItem("L3CBTime");
+
         const n1 = await AsyncStorage.getItem("L1N");
+        const n1Time = await AsyncStorage.getItem("L1NTime");
+
         const n2 = await AsyncStorage.getItem("L2N");
-        const cb3l1 = await AsyncStorage.getItem("L3CB-L1");
-        const cb3l2 = await AsyncStorage.getItem("L3CB-L2");
-        const cb3l3 = await AsyncStorage.getItem("L3CB-L3");
-        const cb3l4 = await AsyncStorage.getItem("L3CB-L4");
-        const cb3l5 = await AsyncStorage.getItem("L3CB-L5");
-        if (nm !== null || ag !== null || cb1 !== null || cb2 !== null || n1 !== null || n2 !== null || cb3l1 !== null) {
+        const n2Time = await AsyncStorage.getItem("L2NTime");
+        
+        if (nm !== null || ag !== null || cb1 !== null || cb2 !== null || n1 !== null || n2 !== null || cb3 !== null) {
           setName(nm);
           setAge(ag);
-          setCbl1(cb1);
-          setCbl2(cb2);
-          setNl1(n1);
-          setNl2(n2);
           setAnim(true);
 
-          //calculate CBL3 values
-          const resultsCBL3 = parseInt(cb3l1) + parseInt(cb3l2) + parseInt(cb3l3) + parseInt(cb3l4) + parseInt(cb3l5);
-          setCbl3(`Colorblindness Level 03 Results ${resultsCBL3} / 5`)
+          setCbl1(`Color Blindness Level 01 Results ${cb1} / 5 ( spent ${cb1Time} seconds )`);
+          setCbl2(`Color Blindness Level 02 Results ${cb2} / 5 ( spent ${cb2Time} seconds )`);
+          setCbl3(`Color Blindness Level 03 Results ${cb3} / 5 ( spent ${cb3Time} seconds )`);
+          setNl1(`Nearsightedness Level 01 Results ${n1} / 6 ( spent ${n1Time} seconds )`);
+          setNl2(`Nearsightedness Level 02 Results ${n2} / 5 ( spent ${n2Time} seconds )`);     
+
+          setSumOfCB( parseInt(cb1) + parseInt(cb2) + parseInt(cb3));
+          setSumOfCBTime( parseInt(cb1Time) + parseInt(cb2Time) + parseInt(cb3Time));
+
+          setSumOfNS(parseInt(n1) + parseInt(n2));
+          setSumOfNSTime(parseInt(n1Time) + parseInt(n2Time));
+
+          if ( sumOfCB >= 11 && sumOfCBTime < 360 ){
+            setThreatLevel('Vision is very good');
+          }
+          else if ( sumOfCB >= 8 && sumOfCB <= 10 && sumOfCBTime < 360 ){
+            setThreatLevel('Vision has low threat level');
+          }
+
         } else {
-          setDone(true);
+          isAvailable(true);
           console.log("No saved state");
         }
       } catch (error) {
@@ -66,7 +92,7 @@ const FinalScore = ({ navigation }) => {
               loop />
           </View>
         </> : <></>}
-      {done ?
+      {available ?
         <>
           <Text style={styles.Txt}>No Prevoius Saved Data</Text>
           <View style={styles.touchContainer}>
@@ -81,6 +107,7 @@ const FinalScore = ({ navigation }) => {
             <Text style={styles.Txt}>Name - {name}</Text>
             <Text style={styles.Txt}>Age - {age}</Text>
           </View>
+          <Text style={styles.threatTxt}>{threatLevel}</Text>
           <Text style={styles.rTxt}>{cbl1}</Text>
           <Text style={styles.rTxt}>{cbl2}</Text>
           <Text style={styles.rTxt}>{cbl3}</Text>
@@ -108,6 +135,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'column',
   },
+  threatTxt: {
+    textAlign: 'center',
+    padding: 20,
+    fontFamily: 'DreamingOutloudPro',
+    color: '#B68D40',
+    fontSize: 25,
+  },
   Txt: {
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
@@ -115,6 +149,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   rTxt: {
+    textAlign: 'center',
     padding: 20,
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
