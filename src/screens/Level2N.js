@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Animated, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Image, Animated, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
-import Lottie from 'lottie-react-native';
+import Timer from './helpComp/Timer';
+import Summary from './Summary';
+import Constants from './helpComp/Constants';
 
 const { width, height } = Dimensions.get('window');
 const IMAGE_WIDTH = 180;
@@ -12,25 +13,8 @@ const AnimatedImageLoop = ({ navigation }) => {
   const [result, setResult] = useState('');
   const [done, setDone] = useState(false);
   const [progress, setProgress] = useState(0);
-
-  // const initialSeconds = 120;
-  // const [seconds, setSeconds] = useState(initialSeconds);
-
-  // useEffect(() => {
-  //     if (seconds <= 0) {
-  //         setDone(true);
-  //         return;
-  //     }
-  //     const timeout = setTimeout(() => {
-  //         setSeconds(seconds - 1);
-  //     }, 1000);
-
-  //     return () => clearTimeout(timeout);
-  // }, [seconds]);
-
-  // const minutes = Math.floor(seconds / 60);
-  // const remainingSeconds = seconds % 60;
-  // const isUnderOneMinute = minutes < 1;
+  const [timeSpent, setTimeSpent] = useState(0);
+  const [seconds, setSeconds] = useState(Constants.INITIAL_TIME);
 
   const leftToRightValue = new Animated.Value(-IMAGE_WIDTH);
   const rightToLeftValue = new Animated.Value(width);
@@ -94,9 +78,21 @@ const AnimatedImageLoop = ({ navigation }) => {
       }
       setResult(`Nearsightedness Level 02 Results ${count} / ${data.length}`)
       setDone(true);
+      setSeconds(0);
     }
     console.log(data);
   }, [data]);
+
+  const handleDataLengthFive = (currentSeconds) => {
+    setTimeSpent(currentSeconds);
+  };
+
+  useEffect(() => {
+    if (done) {
+      setTimeSpent(Constants.INITIAL_TIME - timeSpent);
+      setSeconds(0);
+    }
+  }, [done]);
 
   const press1 = (value) => {
     setData([...data, value]);
@@ -112,60 +108,12 @@ const AnimatedImageLoop = ({ navigation }) => {
     }
   };
 
-  const tryAgain = () => {
-    setDone(false);
-    // setSeconds(initialSeconds);
-    setData([]);
-    setProgress(0);
-  }
-
-  const next = async () => {
-    try {
-      await AsyncStorage.setItem(
-        'L2N',
-        result,
-      );
-      console.log('Result ', result);
-      navigation.navigate('FinalScore');
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   return (
     <View style={styles.mainContainer}>
       <View style={{ width: `${progress}%`, height: '5%', backgroundColor: '#000000' }}></View>
       {done ?
         <>
-          <View style={styles.ltView}>
-            <Lottie
-              style={styles.lottie}
-              source={require('../anim/celeb1.json')}
-              autoPlay
-              loop />
-          </View>
-          <View style={styles.finalContainer}>
-            <Text style={styles.endTxt}>Great Job Kid {'\n'} You've Finished the Game!</Text>
-            <View style={styles.finalSubContainer}>
-              <Text style={styles.rTxt}>{result}</Text>
-
-              <View style={styles.finalBtnContainer}>
-
-                <View style={styles.touchContainer}>
-                  <TouchableOpacity style={styles.tch} onPress={() => { navigation.navigate('First') }}>
-                    <Text style={styles.Txt}>Home</Text>
-                  </TouchableOpacity>
-                </View>
-
-                <View style={styles.touchContainer}>
-                  <TouchableOpacity style={styles.tch} onPress={next}>
-                    <Text style={styles.Txt}>Final Score</Text>
-                  </TouchableOpacity>
-                </View>
-
-              </View>
-            </View>
-          </View>
+          <Summary isOver={true} whichGame='L2N' results={result} playTime={timeSpent} navigation={navigation} nextScreen='FinalScore' />
         </>
         :
         <>
@@ -239,9 +187,9 @@ const AnimatedImageLoop = ({ navigation }) => {
               </Animated.View>
             </View>
           )}
-          {/* <View style={styles.timerContainer}>
-            <Text style={[styles.intrTxt, isUnderOneMinute && styles.redTimerTxt]}>Time Remaining {minutes < 10 ? `0${minutes}` : minutes}:{remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}</Text>
-          </View> */}
+          <View style={styles.timerContainer}>
+            <Timer setDone={setDone} initialSeconds={seconds} updatedTime={setTimeSpent} onDataLengthFive={handleDataLengthFive} data={data} />
+          </View>
         </>}
     </View>
   );
@@ -279,7 +227,9 @@ const styles = StyleSheet.create({
     height: IMAGE_WIDTH,
   },
   timerContainer: {
-    paddingBottom: '5%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1
   },
   finalSubContainer: {
     flex: 1,

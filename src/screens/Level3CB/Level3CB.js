@@ -1,17 +1,21 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, PanResponder, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 import Timer from '../helpComp/Timer';
+import Summary from '../Summary';
+import Constants from '../helpComp/Constants';
 
-const MainComp = ({ startTime, imageSource, pathValue, quote, navigation, nextScreen }) => {
+const Level3CB = ({ startTime, imageSource, pathValue, quote, navigation, nextScreen }) => {
   const path = useRef([]);
   const isDrawing = useRef(false);
   const [drawnPaths, setDrawnPaths] = useState([]);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
-  const [updatedTime, setUpdatedTime] = useState(0);
+  const [updatedTime, setUpdatedTime] = useState();
   const [seconds, setSeconds] = useState(startTime);
+  const [timeSpent, setTimeSpent] = useState(0);
+  const [isSummary, setSummary] = useState(false);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => !isDone && !isCompleted,
@@ -53,18 +57,31 @@ const MainComp = ({ startTime, imageSource, pathValue, quote, navigation, nextSc
     }
   }
 
-  // const updatedTime = (currentTime) => {
-  //   setTimeToPass(currentTime);
-  // };
+  // useEffect (() => {
+  //   if (updatedTime === 0){
+  //     setTimeSpent(updatedTime === 0 ? Constants.INITIAL_TIME : (Constants.INITIAL_TIME - updatedTime));
+  //     setSummary(true);
+  //   }
+  // }, [updatedTime]);
 
   const onYesClick = () => {
     pathValue(determinePath().value);
-    navigation.navigate(nextScreen, { startTime: updatedTime });
+    if (nextScreen === 'Summary') {
+      setTimeSpent(updatedTime === 0 ? Constants.INITIAL_TIME : (Constants.INITIAL_TIME - updatedTime));
+      setSummary(true);
+    } else {
+      navigation.navigate(nextScreen, { startTime: updatedTime });
+    }
   }
 
   const onNoClick = () => {
     pathValue(0);
-    navigation.navigate(nextScreen, { startTime: updatedTime });
+    if (nextScreen === 'Summary') {
+      setTimeSpent(updatedTime === 0 ? Constants.INITIAL_TIME : (Constants.INITIAL_TIME - updatedTime));
+      setSummary(true);
+    } else {
+      navigation.navigate(nextScreen, { startTime: updatedTime });
+    }
   }
 
   const tryAgain = () => {
@@ -101,47 +118,53 @@ const MainComp = ({ startTime, imageSource, pathValue, quote, navigation, nextSc
   };
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={imageSource}
-        style={styles.img}
-        resizeMode="contain" />
-      <View style={styles.drawingArea} {...panResponder.panHandlers}>
-        {(isDone || isCompleted) && (
-          <BlurView style={styles.overlay} blurType="light" blurAmount={10} />
-        )}
-        {renderPaths()}
-        {(isDone || isCompleted) && (
-          <>
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>{quote}</Text>
-            </View>
-            <View style={styles.btnContainer}>
-              <View style={styles.btnRow}>
-                <TouchableOpacity style={styles.button} onPress={onYesClick}>
-                  <View style={styles.buttonContent}>
-                    <Text style={styles.buttonText}>Yes, Continue</Text>
+    <>
+      {isSummary ?
+        <Summary isOver={true} whichGame='L3CB' playTime={timeSpent} navigation={navigation} nextScreen='Instructions' />
+        :
+        <View style={styles.container}>
+          <Image
+            source={imageSource}
+            style={styles.img}
+            resizeMode="contain" />
+          <View style={styles.drawingArea} {...panResponder.panHandlers}>
+            {(isDone || isCompleted) && (
+              <BlurView style={styles.overlay} blurType="light" blurAmount={10} />
+            )}
+            {renderPaths()}
+            {(isDone || isCompleted) && (
+              <>
+                <View style={styles.textContainer}>
+                  <Text style={styles.text}>{quote}</Text>
+                </View>
+                <View style={styles.btnContainer}>
+                  <View style={styles.btnRow}>
+                    <TouchableOpacity style={styles.noButton} onPress={onNoClick}>
+                      <View style={styles.buttonContent}>
+                        <Text style={styles.buttonText}>No, Continue</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={onYesClick}>
+                      <View style={styles.buttonContent}>
+                        <Text style={styles.buttonText}>Yes, Continue</Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={onNoClick}>
-                  <View style={styles.buttonContent}>
-                    <Text style={styles.buttonText}>No, Continue</Text>
+                  <View style={styles.tryButtonContainer}>
+                    <TouchableOpacity style={styles.tryButton} onPress={tryAgain}>
+                      <View style={styles.buttonContent}>
+                        <Text style={styles.buttonText}>Not Sure, Try Again</Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.tryButtonContainer}>
-                <TouchableOpacity style={styles.tryButton} onPress={tryAgain}>
-                  <View style={styles.buttonContent}>
-                    <Text style={styles.buttonText}>Not Sure, Try Again</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </>
-        )}
-      </View>
-      <Timer setDone={setIsDone} initialSeconds={seconds} updatedTime={setUpdatedTime} resetTimer={resetTimer} onReset={() => setResetTimer(false)} />
-    </View>
+                </View>
+              </>
+            )}
+          </View>
+          <Timer setDone={setIsDone} initialSeconds={seconds} updatedTime={setUpdatedTime} resetTimer={resetTimer} onReset={() => setResetTimer(false)} />
+        </View>
+      }
+    </>
   );
 };
 
@@ -205,6 +228,14 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 1,
   },
+  noButton: {
+    margin: 10,
+    backgroundColor: '#757c8a',
+    padding: 10,
+    borderRadius: 25,
+    shadowRadius: 5,
+    shadowOpacity: 1,
+  },
   tryButton: {
     margin: 10,
     backgroundColor: 'transparent',
@@ -224,4 +255,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MainComp;
+export default Level3CB;

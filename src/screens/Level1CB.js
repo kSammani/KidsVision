@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Image, Text, Animated, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Lottie from 'lottie-react-native';
+import Timer from './helpComp/Timer';
+import Summary from './Summary';
+import Constants from './helpComp/Constants';
 
 const Level1CB = ({ navigation }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -12,6 +13,9 @@ const Level1CB = ({ navigation }) => {
     const [progress, setProgress] = useState(0);
     const [colorIndex, setColorIndex] = useState(0);
     const [result, setResult] = useState('');
+    const [timeSpent, setTimeSpent] = useState(0);
+    const [isRequestTime, setIsRequestTime] = useState(false);
+    const [seconds, setSeconds] = useState(Constants.INITIAL_TIME);
 
     const colors = ['#B6D0E2', '#FFFDD0', '#B1D8B7', '#F9CCD3', '#BFCAD0', '#FAF7F0'];
 
@@ -31,25 +35,6 @@ const Level1CB = ({ navigation }) => {
         [7, 8, 9],
     ];
 
-    const initialSeconds = 120;
-    const [seconds, setSeconds] = useState(initialSeconds);
-
-    useEffect(() => {
-        if (seconds <= 0) {
-            setDone(true);
-            return;
-        }
-        const timeout = setTimeout(() => {
-            setSeconds(seconds - 1);
-        }, 1000);
-
-        return () => clearTimeout(timeout);
-    }, [seconds]);
-
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    const isUnderOneMinute = minutes < 1;
-
     useEffect(() => {
         console.log(clickedNumbers);
         if (JSON.stringify(clickedNumbers) === JSON.stringify(initialData)) {
@@ -63,9 +48,17 @@ const Level1CB = ({ navigation }) => {
                 count++;
             }
         }
+        setIsRequestTime(true);
         setResult(`Color Blindness Level 01 Results ${count} / ${images.length}`)
         console.log('Result ', count, '/', images.length);
     }, [clickedNumbers]);
+
+    useEffect(() => {
+        if (done) {
+            setTimeSpent(timeSpent === 0 ? Constants.INITIAL_TIME : (Constants.INITIAL_TIME - timeSpent));
+            setSeconds(0);
+        }
+    }, [done]);
 
     const handleButtonClick = (number) => {
         if (currentImageIndex == (images.length - 1)) {
@@ -89,18 +82,6 @@ const Level1CB = ({ navigation }) => {
     //     setResult('');
     // }
 
-    const next = async () => {
-        try {
-            await AsyncStorage.setItem(
-                'L1CB',
-                result,
-            );
-            navigation.navigate('InstructionL2CB');
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     const styles = StyleSheet.create({
         mainContainer: {
             flex: 1,
@@ -117,6 +98,10 @@ const Level1CB = ({ navigation }) => {
             alignItems: 'center',
             justifyContent: 'center',
             paddingTop: '40%',
+        },
+        timeContainer: {
+            alignItems: 'center',
+            justifyContent: 'center',
         },
         gameContainer: {
             flex: 1,
@@ -183,17 +168,6 @@ const Level1CB = ({ navigation }) => {
             fontFamily: 'DreamingOutloudPro',
             color: 'black'
         },
-        ltView: {
-            height: '60%',
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-        },
-        lottie: {
-            height: '100%',
-            width: '100%',
-        },
     });
 
     return (
@@ -203,24 +177,7 @@ const Level1CB = ({ navigation }) => {
             <View style={styles.container}>
                 {done ?
                     <>
-                        <View style={styles.ltView}>
-                            <Lottie
-                                style={styles.lottie}
-                                source={require('../anim/celeb1.json')}
-                                autoPlay
-                                loop />
-                        </View>
-                        <View style={styles.finalContainer}>
-                            <View style={styles.resultContainer}>
-                                <Text style={styles.rTxt}>{result}</Text>
-                            </View>
-
-                            <View style={styles.touchContainer}>
-                                <TouchableOpacity style={styles.tch} onPress={next}>
-                                    <Text style={styles.Txt}>Next</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                        <Summary isOver={false} whichGame='L1CB' results={result} playTime={timeSpent} navigation={navigation} nextScreen='InstructionL2CB' />
                     </>
                     :
                     <>
@@ -240,8 +197,8 @@ const Level1CB = ({ navigation }) => {
                                 </View>
                             ))}
                         </View>
-                        <View>
-                            <Text style={[styles.intrTxt, isUnderOneMinute && styles.redTimerTxt]}>Time Remaining {minutes < 10 ? `0${minutes}` : minutes}:{remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}</Text>
+                        <View style={styles.timeContainer}>
+                            <Timer setDone={setDone} requestTime={isRequestTime} initialSeconds={seconds} updatedTime={setTimeSpent} />
                         </View>
                     </>
                 }

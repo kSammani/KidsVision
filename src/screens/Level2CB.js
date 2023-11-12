@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { DraxProvider, DraxView } from 'react-native-drax';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Lottie from 'lottie-react-native';
+import Timer from './helpComp/Timer';
+import Summary from './Summary';
+import Constants from './helpComp/Constants';
 
 const Test = ({ navigation }) => {
     const [staged1, setStaged1] = useState([]);
@@ -18,25 +18,16 @@ const Test = ({ navigation }) => {
     const newData = [...data];
     const [done, setDone] = useState(false);
     const [result, setResult] = useState('');
-
-    const initialSeconds = 120;
-    const [seconds, setSeconds] = useState(initialSeconds);
+    const [timeSpent, setTimeSpent] = useState(0);
+    const [isRequestTime, setIsRequestTime] = useState(false);
+    const [seconds, setSeconds] = useState(Constants.INITIAL_TIME);
 
     useEffect(() => {
-        if (seconds <= 0) {
-            setDone(true);
-            return;
+        if (done) {
+            setTimeSpent(timeSpent === 0 ? Constants.INITIAL_TIME : (Constants.INITIAL_TIME - timeSpent));
+            setSeconds(0);
         }
-        const timeout = setTimeout(() => {
-            setSeconds(seconds - 1);
-        }, 1000);
-
-        return () => clearTimeout(timeout);
-    }, [seconds]);
-
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    const isUnderOneMinute = minutes < 1;
+    }, [done]);
 
     useEffect(() => {
         if (JSON.stringify(data) !== JSON.stringify(initialData)) {
@@ -55,6 +46,7 @@ const Test = ({ navigation }) => {
                 count++;
             }
         }
+        setIsRequestTime(true);
         setResult(`Color Blindness Level 02 Results ${count} / ${data.length}`)
         console.log('Result ', count, '/', data.length);
     }, [data]);
@@ -71,52 +63,11 @@ const Test = ({ navigation }) => {
     //     setResult('');
     // }
 
-    const next = async () => {
-        try {
-            await AsyncStorage.setItem(
-                'L2CB',
-                result,
-            );
-            console.log('Result ', result);
-            navigation.navigate('InstructionL3CB');
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     return (
         <>
             {done ?
                 <>
-                    <View style={styles.ltView}>
-                        <Lottie
-                            style={styles.lottie}
-                            source={require('../anim/celeb1.json')}
-                            autoPlay
-                            loop />
-                    </View>
-                    <View style={styles.finalContainer}>
-                        <Text style={styles.endTxt}>Great Job Kid {'\n'} You've Finished the Game!</Text>
-                        <View style={styles.finalSubContainer}>
-                            <Text style={styles.rTxt}>{result}</Text>
-
-                            <View style={styles.finalBtnContainer}>
-
-                                <View style={styles.touchContainer}>
-                                    <TouchableOpacity style={styles.tch} onPress={() => { navigation.navigate('First') }}>
-                                        <Text style={styles.Txt}>Home</Text>
-                                    </TouchableOpacity>
-                                </View>
-
-                                <View style={styles.touchContainer}>
-                                    <TouchableOpacity style={styles.tch} onPress={next}>
-                                        <Text style={styles.nTxt}>Next</Text>
-                                    </TouchableOpacity>
-                                </View>
-
-                            </View>
-                        </View>
-                    </View>
+                    <Summary isOver={false} whichGame='L2CB' results={result} playTime={timeSpent} navigation={navigation} nextScreen='InstructionL3CB' />
                 </>
                 :
                 <View style={styles.mainContainer}>
@@ -427,7 +378,7 @@ const Test = ({ navigation }) => {
                         </DraxProvider>
                     </View>
                     <View style={styles.timerContainer}>
-                        <Text style={[styles.timerTxt, isUnderOneMinute && styles.redTimerTxt]}>Time Remaining {minutes < 10 ? `0${minutes}` : minutes}:{remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}</Text>
+                        <Timer setDone={setDone} requestTime={isRequestTime} initialSeconds={seconds} updatedTime={setTimeSpent} />
                     </View>
                 </View>}
         </>
@@ -446,6 +397,8 @@ const styles = StyleSheet.create({
     },
     timerContainer: {
         paddingBottom: '5%',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     container: {
         flex: 1,
@@ -490,12 +443,6 @@ const styles = StyleSheet.create({
     },
     redTimerTxt: {
         color: 'red',
-    },
-    endTxt: {
-        textAlign: 'center',
-        fontFamily: 'DreamingOutloudPro',
-        color: '#000',
-        fontSize: 30,
     },
     finalBtnContainer: {
         flexDirection: 'row',

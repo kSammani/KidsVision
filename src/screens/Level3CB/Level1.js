@@ -1,10 +1,11 @@
 import React from 'react';
-import MainComp from './MainComp';
+import MainComp from './Level3CB';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from '../helpComp/Constants';
 
 const Level1 = ({ navigation }) => {
   const quote = 'Seems like Your child is Correct!';
-  const startTime = 120;
+  const startTime = Constants.INITIAL_TIME;
   const saveValue = async (value) => {
     try {
       console.log(value);

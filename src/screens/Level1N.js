@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Image, Text, Animated } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Lottie from 'lottie-react-native';
+import Timer from './helpComp/Timer';
+import Summary from './Summary';
+import Constants from './helpComp/Constants';
 
 const Level1N = ({ navigation }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -11,6 +12,9 @@ const Level1N = ({ navigation }) => {
     const [done, setDone] = useState(false);
     const [progress, setProgress] = useState(0);
     const [result, setResult] = useState('');
+    const [timeSpent, setTimeSpent] = useState(0);
+    const [isRequestTime, setIsRequestTime] = useState(false);
+    const [seconds, setSeconds] = useState(Constants.INITIAL_TIME);
 
     const images = [
         require('../images/level1N/apple.png'),
@@ -29,25 +33,6 @@ const Level1N = ({ navigation }) => {
         ['Papaya', 'Grapes'],
     ];
 
-    const initialSeconds = 120;
-    const [seconds, setSeconds] = useState(initialSeconds);
-
-    useEffect(() => {
-        if (seconds <= 0) {
-            setDone(true);
-            return;
-        }
-        const timeout = setTimeout(() => {
-            setSeconds(seconds - 1);
-        }, 1000);
-
-        return () => clearTimeout(timeout);
-    }, [seconds]);
-
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    const isUnderOneMinute = minutes < 1;
-
     useEffect(() => {
         console.log(clickedFruit);
         if (JSON.stringify(clickedFruit) !== JSON.stringify(initialData)) {
@@ -61,9 +46,17 @@ const Level1N = ({ navigation }) => {
                 count++;
             }
         }
+        setIsRequestTime(true);
         setResult(`Nearsightedness Level 01 Results ${count} / ${images.length}`)
         console.log('Result ', count, '/', images.length);
     }, [clickedFruit]);
+
+    useEffect(() => {
+        if (done) {
+            setTimeSpent(timeSpent === 0 ? Constants.INITIAL_TIME : (Constants.INITIAL_TIME - timeSpent));
+            setSeconds(0);
+        }
+    }, [done]);
 
     const handleButtonClick = (fruit) => {
         if (currentImageIndex == (images.length - 1)) {
@@ -85,42 +78,13 @@ const Level1N = ({ navigation }) => {
     //     setResult('');
     // }
 
-    const next = async () => {
-        try {
-            await AsyncStorage.setItem(
-                'L1N',
-                result,
-            );
-            navigation.navigate('InstructionL2N');
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     return (
         <View style={styles.mainContainer}>
             <View style={{ width: `${progress}%`, height: '5%', backgroundColor: '#000000' }}></View>
             <View style={styles.container}>
                 {done ?
                     <>
-                        <View style={styles.ltView}>
-                            <Lottie
-                                style={styles.lottie}
-                                source={require('../anim/celeb1.json')}
-                                autoPlay
-                                loop />
-                        </View>
-                        <View style={styles.finalContainer}>
-                            <View style={styles.resultContainer}>
-                                <Text style={styles.rTxt}>{result}</Text>
-                            </View>
-
-                            <View style={styles.touchContainer}>
-                                <TouchableOpacity style={styles.tch} onPress={next}>
-                                    <Text style={styles.Txt}>Next</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                        <Summary isOver={false} whichGame='L1N' results={result} playTime={timeSpent} navigation={navigation} nextScreen='InstructionL2N' />
                     </>
                     :
                     <>
@@ -140,8 +104,8 @@ const Level1N = ({ navigation }) => {
                                 </View>
                             ))}
                         </View>
-                        <View>
-                            <Text style={[styles.intrTxt, isUnderOneMinute && styles.redTimerTxt]}>Time Remaining {minutes < 10 ? `0${minutes}` : minutes}:{remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}</Text>
+                        <View style={styles.timeContainer}>
+                            <Timer setDone={setDone} requestTime={isRequestTime} initialSeconds={seconds} updatedTime={setTimeSpent} />
                         </View>
                     </>
                 }
@@ -181,6 +145,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: '40%',
+    },
+    timeContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     touchContainer: {
         margin: 10,
