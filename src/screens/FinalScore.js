@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Linking, PermissionsAndroid } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Linking, PermissionsAndroid } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
@@ -212,6 +212,7 @@ const FinalScore = ({ navigation }) => {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       {anim ?
         <>
@@ -240,7 +241,7 @@ const FinalScore = ({ navigation }) => {
           </View>
           {isCbAvailable && (
             <>
-              <Text style={styles.rTxt}>Color Blindness Threat Level</Text>
+              <Text style={styles.tlTxt}>Color Blindness Threat Level</Text>
               <Text style={styles.threatTxt}>{cbThreatLevel}</Text>
 
               <Text style={styles.rTxt}>{cbl1}</Text>
@@ -250,7 +251,7 @@ const FinalScore = ({ navigation }) => {
           )}
           {isNsAvailable && (
             <>
-              <Text style={styles.rTxt}>Nearsightedness Threat Level</Text>
+              <Text style={styles.tlTxt}>Nearsightedness Threat Level</Text>
               <Text style={styles.threatTxt}>{nsThreatLevel}</Text>
 
               <Text style={styles.rTxt}>{nl1}</Text>
@@ -276,12 +277,14 @@ const FinalScore = ({ navigation }) => {
           </View>
         </>}
     </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingVertical: 20,
     backgroundColor: '#FAF7F0',
     alignItems: 'center',
     justifyContent: 'center',
@@ -293,10 +296,10 @@ const styles = StyleSheet.create({
   },
   threatTxt: {
     textAlign: 'center',
+    fontWeight: 'bold',
     padding: 20,
-    fontFamily: 'DreamingOutloudPro',
     color: '#B68D40',
-    fontSize: 25,
+    fontSize: 30,
   },
   Txt: {
     fontFamily: 'DreamingOutloudPro',
@@ -310,6 +313,13 @@ const styles = StyleSheet.create({
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
     fontSize: 20,
+  },
+  tlTxt: {
+    textAlign: 'center',
+    padding: 20,
+    fontFamily: 'DreamingOutloudPro',
+    color: '#B68D40',
+    fontSize: 25,
   },
   touchContainer: {
     height: 60,
