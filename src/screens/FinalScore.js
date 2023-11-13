@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Linking } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Geolocation from '@react-native-community/geolocation';
 
 import Lottie from 'lottie-react-native';
 
 const FinalScore = ({ navigation }) => {
-  const [available, isAvailable] = useState(true);
-  const [CbAvailable, isCbAvailable] = useState(false);
-  const [NsAvailable, isNsAvailable] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(true);
+  const [isCbAvailable, setIsCbAvailable] = useState(false);
+  const [isNsAvailable, setIsNsAvailable] = useState(false);
 
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
@@ -58,7 +59,7 @@ const FinalScore = ({ navigation }) => {
           setAnim(true);
 
           if (cb1 !== null) {
-            isCbAvailable(true);
+            setIsCbAvailable(true);
 
             setCbl1(`Color Blindness Level 01 Results ${cb1} / 5 ( spent ${cb1Time} seconds )`);
             setCbl2(`Color Blindness Level 02 Results ${cb2} / 5 ( spent ${cb2Time} seconds )`);
@@ -94,7 +95,7 @@ const FinalScore = ({ navigation }) => {
           }
 
           if (n1 !== null) {
-            isNsAvailable(true);
+            setIsNsAvailable(true);
 
             setNl1(`Nearsightedness Level 01 Results ${n1} / 6 ( spent ${n1Time} seconds )`);
             setNl2(`Nearsightedness Level 02 Results ${n2} / 5 ( spent ${n2Time} seconds )`);
@@ -128,7 +129,7 @@ const FinalScore = ({ navigation }) => {
             }
           }
         } else {
-          isAvailable(false);
+          setIsAvailable(false);
           console.log("No saved state");
         }
       } catch (error) {
@@ -137,6 +138,76 @@ const FinalScore = ({ navigation }) => {
     };
     getEnab();
   });
+
+  const [location, setLocation] = useState({ latitude: null, longitude: null });
+
+  const requestLocationPermission = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Location Permission',
+            message: 'This app needs access to your location.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          getLocation();
+        } else {
+          console.log('Location permission denied');
+        }
+      } else if (Platform.OS === 'ios') {
+        const status = Geolocation.requestAuthorization();
+        if (status === 'granted') {
+          getLocation();
+        } else {
+          console.log('Location permission denied');
+        }
+      }
+    } catch (error) {
+      console.error('Error requesting location permission:', error);
+    }
+  };
+
+  const getLocation = () => {
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude, longitude });
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+      },
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  }
+
+  const getEyeCareLocations = () => {
+    requestLocationPermission();
+    const urlPha = `geo:${location.latitude},${location.longitude}?q=eye+care`;
+    Linking.canOpenURL(urlPha).then(supported => {
+      if (supported) {
+        Linking.openURL(urlPha);
+      } else {
+        console.log("Can't Find, maybe Your don't gave Google Maps in your mobile or Didn't enable");
+      }
+    });
+  };
+
+  const getOpticalsLocations = () => {
+    requestLocationPermission();
+    const urlPha = `geo:${location.latitude},${location.longitude}?q=optical`;
+    Linking.canOpenURL(urlPha).then(supported => {
+      if (supported) {
+        Linking.openURL(urlPha);
+      } else {
+        console.log("Can't Find, maybe Your don't gave Google Maps in your mobile or Didn't enable");
+      }
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -150,7 +221,7 @@ const FinalScore = ({ navigation }) => {
               loop />
           </View>
         </> : <></>}
-      {!available ?
+      {!isAvailable ?
         <>
           <Text style={styles.threatTxt}>Your Child Must Complete One Game Before Get the Results.</Text>
           <View style={styles.touchContainer}>
@@ -184,10 +255,22 @@ const FinalScore = ({ navigation }) => {
               <Text style={styles.rTxt}>{nl2}</Text>
             </>
           )}
-          <View style={styles.touchContainer}>
-            <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('First')}>
-              <Text style={styles.buttonText}>Home</Text>
-            </TouchableOpacity>
+          <View>
+            <View style={styles.touchContainer}>
+              <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('First')}>
+                <Text style={styles.buttonText}>Home</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.touchContainer}>
+              <TouchableOpacity style={styles.tch} onPress={getEyeCareLocations}>
+                <Text style={styles.buttonText}>Find Nearest Eye Care</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.touchContainer}>
+              <TouchableOpacity style={styles.tch} onPress={getOpticalsLocations}>
+                <Text style={styles.buttonText}>Find Nearest Opticals</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </>}
     </View>
