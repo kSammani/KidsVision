@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Linking } from 'react-native';
+import { Text, View, StyleSheet, Linking, PermissionsAndroid } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
@@ -155,6 +155,7 @@ const FinalScore = ({ navigation }) => {
           }
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Location permission granted');
           getLocation();
         } else {
           console.log('Location permission denied');
@@ -162,6 +163,7 @@ const FinalScore = ({ navigation }) => {
       } else if (Platform.OS === 'ios') {
         const status = Geolocation.requestAuthorization();
         if (status === 'granted') {
+          console.log('Location permission granted');
           getLocation();
         } else {
           console.log('Location permission denied');
@@ -185,26 +187,26 @@ const FinalScore = ({ navigation }) => {
     );
   }
 
-  const getEyeCareLocations = () => {
-    requestLocationPermission();
+  const getEyeCareLocations = async () => {
+    await requestLocationPermission();
     const urlPha = `geo:${location.latitude},${location.longitude}?q=eye+care`;
-    Linking.canOpenURL(urlPha).then(supported => {
+    Linking.openURL(urlPha).then(supported => {
       if (supported) {
         Linking.openURL(urlPha);
       } else {
-        console.log("Can't Find, maybe Your don't gave Google Maps in your mobile or Didn't enable");
+        console.log("Can't Find, maybe Your don't gave Google Maps in your mobile or Did not enable");
       }
     });
   };
 
-  const getOpticalsLocations = () => {
-    requestLocationPermission();
+  const getOpticalsLocations = async () => {
+    await requestLocationPermission();
     const urlPha = `geo:${location.latitude},${location.longitude}?q=optical`;
-    Linking.canOpenURL(urlPha).then(supported => {
+    Linking.openURL(urlPha).then(supported => {
       if (supported) {
         Linking.openURL(urlPha);
       } else {
-        console.log("Can't Find, maybe Your don't gave Google Maps in your mobile or Didn't enable");
+        console.log("Can't Find, maybe Your don't gave Google Maps in your mobile or Did not enable");
       }
     });
   };
