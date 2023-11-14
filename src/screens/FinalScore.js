@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, ScrollView, StyleSheet, Linking, PermissionsAndroid } from 'react-native';
+import { Text, View, ScrollView, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Geolocation from '@react-native-community/geolocation';
-
-import Lottie from 'lottie-react-native';
 
 const FinalScore = ({ navigation }) => {
   const [isAvailable, setIsAvailable] = useState(true);
-  const [isCbAvailable, setIsCbAvailable] = useState(false);
-  const [isNsAvailable, setIsNsAvailable] = useState(false);
 
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
@@ -29,8 +24,6 @@ const FinalScore = ({ navigation }) => {
 
   const [cbThreatLevel, setCbThreatLevel] = useState('');
   const [nsThreatLevel, setNsThreatLevel] = useState('');
-
-  const [anim, setAnim] = useState(false);
 
   useEffect(() => {
     const getEnab = async () => {
@@ -56,14 +49,12 @@ const FinalScore = ({ navigation }) => {
         if ((cb1 !== null && cb2 !== null && cb3 !== null) || (n1 !== null && n2 !== null)) {
           setName(nm);
           setAge(ag);
-          setAnim(true);
 
           if (cb1 !== null) {
-            setIsCbAvailable(true);
 
-            setCbl1(`Color Blindness Level 01 Results ${cb1} / 5 ( spent ${cb1Time} seconds )`);
-            setCbl2(`Color Blindness Level 02 Results ${cb2} / 5 ( spent ${cb2Time} seconds )`);
-            setCbl3(`Color Blindness Level 03 Results ${cb3} / 5 ( spent ${cb3Time} seconds )`);
+            setCbl1(`Level 01 : ${cb1} / 5 ( Time spent : ${cb1Time} seconds )`);
+            setCbl2(`Level 02 : ${cb2} / 5 ( Time spent : ${cb2Time} seconds )`);
+            setCbl3(`Level 03 : ${cb3} / 5 ( Time spent : ${cb3Time} seconds )`);
 
             setSumOfCB(parseInt(cb1) + parseInt(cb2) + parseInt(cb3));
             setSumOfCBTime(parseInt(cb1Time) + parseInt(cb2Time) + parseInt(cb3Time));
@@ -95,10 +86,9 @@ const FinalScore = ({ navigation }) => {
           }
 
           if (n1 !== null) {
-            setIsNsAvailable(true);
 
-            setNl1(`Nearsightedness Level 01 Results ${n1} / 6 ( spent ${n1Time} seconds )`);
-            setNl2(`Nearsightedness Level 02 Results ${n2} / 5 ( spent ${n2Time} seconds )`);
+            setNl1(`Level 01 : ${n1} / 6 ( Time spent : ${n1Time} seconds )`);
+            setNl2(`Level 02 : ${n2} / 5 ( Time spent : ${n2Time} seconds )`);
 
             setSumOfNS(parseInt(n1) + parseInt(n2));
             setSumOfNSTime(parseInt(n1Time) + parseInt(n2Time));
@@ -139,91 +129,24 @@ const FinalScore = ({ navigation }) => {
     getEnab();
   });
 
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
-
-  const requestLocationPermission = async () => {
+  const next = async () => {
     try {
-      if (Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: 'Location Permission',
-            message: 'This app needs access to your location.',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          }
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('Location permission granted');
-          getLocation();
-        } else {
-          console.log('Location permission denied');
-        }
-      } else if (Platform.OS === 'ios') {
-        const status = Geolocation.requestAuthorization();
-        if (status === 'granted') {
-          console.log('Location permission granted');
-          getLocation();
-        } else {
-          console.log('Location permission denied');
-        }
-      }
+      await AsyncStorage.setItem(
+        'CBTL',
+        cbThreatLevel,
+      );
+      await AsyncStorage.setItem(
+        'NSTL',
+        nsThreatLevel,
+      );
+      navigation.navigate('ThreatLevel');
     } catch (error) {
-      console.error('Error requesting location permission:', error);
+      console.log(error);
     }
-  };
-
-  const getLocation = () => {
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setLocation({ latitude, longitude });
-      },
-      (error) => {
-        console.error('Error getting location:', error);
-      },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
   }
 
-  const getEyeCareLocations = async () => {
-    await requestLocationPermission();
-    const urlPha = `geo:${location.latitude},${location.longitude}?q=eye+care`;
-    Linking.openURL(urlPha).then(supported => {
-      if (supported) {
-        Linking.openURL(urlPha);
-      } else {
-        console.log("Can't Find, maybe Your don't gave Google Maps in your mobile or Did not enable");
-      }
-    });
-  };
-
-  const getOpticalsLocations = async () => {
-    await requestLocationPermission();
-    const urlPha = `geo:${location.latitude},${location.longitude}?q=optical`;
-    Linking.openURL(urlPha).then(supported => {
-      if (supported) {
-        Linking.openURL(urlPha);
-      } else {
-        console.log("Can't Find, maybe Your don't gave Google Maps in your mobile or Did not enable");
-      }
-    });
-  };
-
   return (
-    <ScrollView>
     <View style={styles.container}>
-      {anim ?
-        <>
-          <View style={styles.ltView}>
-            <Lottie
-              style={styles.lottie}
-              source={require('../anim/celeb2.json')}
-              autoPlay
-              loop />
-          </View>
-        </> : <></>}
       {!isAvailable ?
         <>
           <Text style={styles.threatTxt}>Your Child Must Complete One Game Before Get the Results.</Text>
@@ -239,45 +162,23 @@ const FinalScore = ({ navigation }) => {
             <Text style={styles.Txt}>Name - {name}</Text>
             <Text style={styles.Txt}>Age - {age}</Text>
           </View>
-          {isCbAvailable && (
-            <>
-              <Text style={styles.tlTxt}>Color Blindness Threat Level</Text>
-              <Text style={styles.threatTxt}>{cbThreatLevel}</Text>
+          <Text style={styles.tlTxt}>Color Blindness Test Results</Text>
+          <Text style={styles.rTxt}>{cbl1}</Text>
+          <Text style={styles.rTxt}>{cbl2}</Text>
+          <Text style={styles.rTxt}>{cbl3}</Text>
 
-              <Text style={styles.rTxt}>{cbl1}</Text>
-              <Text style={styles.rTxt}>{cbl2}</Text>
-              <Text style={styles.rTxt}>{cbl3}</Text>
-            </>
-          )}
-          {isNsAvailable && (
-            <>
-              <Text style={styles.tlTxt}>Nearsightedness Threat Level</Text>
-              <Text style={styles.threatTxt}>{nsThreatLevel}</Text>
-
-              <Text style={styles.rTxt}>{nl1}</Text>
-              <Text style={styles.rTxt}>{nl2}</Text>
-            </>
-          )}
+          <Text style={styles.tlTxt}>Nearsightedness Test Results</Text>
+          <Text style={styles.rTxt}>{nl1}</Text>
+          <Text style={styles.rTxt}>{nl2}</Text>
           <View>
             <View style={styles.touchContainer}>
-              <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('First')}>
-                <Text style={styles.buttonText}>Home</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.touchContainer}>
-              <TouchableOpacity style={styles.tch} onPress={getEyeCareLocations}>
-                <Text style={styles.buttonText}>Find Nearest Eye Care</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.touchContainer}>
-              <TouchableOpacity style={styles.tch} onPress={getOpticalsLocations}>
-                <Text style={styles.buttonText}>Find Nearest Opticals</Text>
+              <TouchableOpacity style={styles.tch} onPress={next}>
+                <Text style={styles.buttonText}>Threat Level</Text>
               </TouchableOpacity>
             </View>
           </View>
         </>}
     </View>
-    </ScrollView>
   )
 }
 
@@ -294,13 +195,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'column',
   },
-  threatTxt: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    padding: 20,
-    color: '#B68D40',
-    fontSize: 30,
-  },
   Txt: {
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
@@ -309,14 +203,14 @@ const styles = StyleSheet.create({
   },
   rTxt: {
     textAlign: 'center',
-    padding: 20,
+    padding: 10,
     fontFamily: 'DreamingOutloudPro',
     color: '#000',
     fontSize: 20,
   },
   tlTxt: {
     textAlign: 'center',
-    padding: 20,
+    padding: 10,
     fontFamily: 'DreamingOutloudPro',
     color: '#B68D40',
     fontSize: 25,
@@ -339,15 +233,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: 'DreamingOutloudPro',
     color: '#fff'
-  },
-  ltView: {
-    height: '100%',
-    width: '100%',
-    position: 'absolute',
-  },
-  lottie: {
-    flex: 1,
-  },
+  }
 });
 
 export default FinalScore;

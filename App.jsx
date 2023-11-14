@@ -19,11 +19,13 @@ import Info from './src/screens/Info';
 import Level1N from './src/screens/Level1N';
 import Level2N from './src/screens/Level2N';
 import Instructions from './src/screens/Instructions';
-import FinalScore from './src/screens/FinalScore';
 import InstructionL1CB from './src/screens/InstructionL1CB';
 import InstructionL2CB from './src/screens/InstructionL2CB';
 import InstructionL1N from './src/screens/InstructionL1N';
 import InstructionL2N from './src/screens/InstructionL2N';
+
+import FinalScore from './src/screens/FinalScore';
+import ThreatLevel from './src/screens/ThreatLevel';
 
 const Stack = createStackNavigator();
 
@@ -50,6 +52,7 @@ export default function App() {
         <Stack.Screen name="InstructionL2N" component={InstructionL2N} options={{ headerShown: false }} />
         <Stack.Screen name="Level2N" component={Level2N} options={{ headerShown: false }} />
         <Stack.Screen name="FinalScore" component={FinalScore} options={{ headerShown: false }} />
+        <Stack.Screen name="ThreatLevel" component={ThreatLevel} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
