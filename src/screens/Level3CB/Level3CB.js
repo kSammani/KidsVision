@@ -11,6 +11,7 @@ const Level3CB = ({ startTime, imageSource, pathValue, quote, navigation, nextSc
   const isDrawing = useRef(false);
   const [drawnPaths, setDrawnPaths] = useState([]);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isPath, setIsPath] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
   const [updatedTime, setUpdatedTime] = useState();
@@ -22,18 +23,21 @@ const Level3CB = ({ startTime, imageSource, pathValue, quote, navigation, nextSc
     onStartShouldSetPanResponder: () => !isDone && !isCompleted,
     onMoveShouldSetPanResponder: () => !isDone && !isCompleted,
     onPanResponderGrant: () => {
+      setIsPath(true);
       if (!isDone && !isCompleted) {
         isDrawing.current = true;
         path.current = [];
       }
     },
     onPanResponderMove: (e, gestureState) => {
+      setIsPath(true);
       if (isDrawing.current) {
         path.current.push({ x: gestureState.moveX, y: gestureState.moveY });
         setDrawnPaths([...drawnPaths, path.current]);
       }
     },
     onPanResponderRelease: () => {
+      setIsPath(true);
       isDrawing.current = false;
       //setDrawnPaths([...drawnPaths, path.current]);
       setIsCompleted(true);
@@ -59,7 +63,7 @@ const Level3CB = ({ startTime, imageSource, pathValue, quote, navigation, nextSc
   }
 
   useEffect (() => {
-    if (!isCompleted && updatedTime === 0){
+    if (!isPath && updatedTime === 0){
       setSummary(true);
       setTimeSpent(Constants.INITIAL_TIME);
       if (nextScreen === 'Level3CBLevel2') {
@@ -77,7 +81,7 @@ const Level3CB = ({ startTime, imageSource, pathValue, quote, navigation, nextSc
         saveValue();
       }
     }
-  }, [isCompleted, updatedTime, nextScreen]);
+  }, [isPath, updatedTime, nextScreen]);
 
   const onYesClick = () => {
     pathValue(determinePath().value);
