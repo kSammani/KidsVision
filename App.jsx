@@ -33,13 +33,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="InstructionL3CB" component={InstructionL3CB} options={{ headerShown: false }} />
-        <Stack.Screen name="Level3CBLevel1" component={Level3CBLevel1} options={{ headerShown: false }} />
-        <Stack.Screen name="Level3CBLevel2" component={Level3CBLevel2} options={{ headerShown: false }} />
-        <Stack.Screen name="Level3CBLevel3" component={Level3CBLevel3} options={{ headerShown: false }} />
-        <Stack.Screen name="Level3CBLevel4" component={Level3CBLevel4} options={{ headerShown: false }} />
-        <Stack.Screen name="Level3CBLevel5" component={Level3CBLevel5} options={{ headerShown: false }} />
-        
         <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
         <Stack.Screen name="Info" component={Info} options={{ headerShown: false }} />
         <Stack.Screen name="First" component={First} options={{ headerShown: false }} />
@@ -47,7 +40,12 @@ export default function App() {
         <Stack.Screen name="Level1CB" component={Level1CB} options={{ headerShown: false }} />
         <Stack.Screen name="InstructionL2CB" component={InstructionL2CB} options={{ headerShown: false }} />
         <Stack.Screen name="Level2CB" component={Level2CB} options={{ headerShown: false }} />
-        
+        <Stack.Screen name="InstructionL3CB" component={InstructionL3CB} options={{ headerShown: false }} />
+        <Stack.Screen name="Level3CBLevel1" component={Level3CBLevel1} options={{ headerShown: false }} />
+        <Stack.Screen name="Level3CBLevel2" component={Level3CBLevel2} options={{ headerShown: false }} />
+        <Stack.Screen name="Level3CBLevel3" component={Level3CBLevel3} options={{ headerShown: false }} />
+        <Stack.Screen name="Level3CBLevel4" component={Level3CBLevel4} options={{ headerShown: false }} />
+        <Stack.Screen name="Level3CBLevel5" component={Level3CBLevel5} options={{ headerShown: false }} />
         <Stack.Screen name="Instructions" component={Instructions} options={{ headerShown: false }} />
         <Stack.Screen name="InstructionL1N" component={InstructionL1N} options={{ headerShown: false }} />
         <Stack.Screen name="Level1N" component={Level1N} options={{ headerShown: false }} />
