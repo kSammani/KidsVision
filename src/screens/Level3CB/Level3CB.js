@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, PanResponder, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BlurView } from '@react-native-community/blur';
 import Timer from '../helpComp/Timer';
 import Summary from '../Summary';
@@ -57,12 +58,26 @@ const Level3CB = ({ startTime, imageSource, pathValue, quote, navigation, nextSc
     }
   }
 
-  // useEffect (() => {
-  //   if (updatedTime === 0){
-  //     setTimeSpent(updatedTime === 0 ? Constants.INITIAL_TIME : (Constants.INITIAL_TIME - updatedTime));
-  //     setSummary(true);
-  //   }
-  // }, [updatedTime]);
+  useEffect (() => {
+    if (!isCompleted && updatedTime === 0){
+      setSummary(true);
+      setTimeSpent(Constants.INITIAL_TIME);
+      if (nextScreen === 'Level3CBLevel2') {
+        console.log('Saving timeout...');
+        const saveValue = async () => {
+          try {
+            await AsyncStorage.setItem(
+              'L3CB-L1',
+              '0',
+            );
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        saveValue();
+      }
+    }
+  }, [isDone, updatedTime, nextScreen]);
 
   const onYesClick = () => {
     pathValue(determinePath().value);
@@ -161,7 +176,7 @@ const Level3CB = ({ startTime, imageSource, pathValue, quote, navigation, nextSc
               </>
             )}
           </View>
-          <Timer setDone={setIsDone} initialSeconds={seconds} updatedTime={setUpdatedTime} resetTimer={resetTimer} onReset={() => setResetTimer(false)} />
+          <Timer setDone={setIsDone} initialSeconds={seconds} requestTime={true} updatedTime={setUpdatedTime} resetTimer={resetTimer} onReset={() => setResetTimer(false)} />
         </View>
       }
     </>
