@@ -7,44 +7,55 @@ import Lottie from 'lottie-react-native';
 
 const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen }) => {
     const [result, setResult] = useState(results);
-    const [customResult, setCustomResult] =useState('');
+    const [customResult, setCustomResult] = useState('');
 
     useEffect(() => {
-        if (whichGame === 'L1CB'){
+        if (whichGame === 'L1CB') {
             setCustomResult(`Color Blindness Level 01 Results ${results} / 5`)
         }
-        else if (whichGame === 'L2CB'){
+        else if (whichGame === 'L2CB') {
             setCustomResult(`Color Blindness Level 02 Results ${results} / 5`)
         }
         else if (whichGame === 'L3CB') {
             async function fetchData() {
                 try {
-                    const cb3l1 = await AsyncStorage.getItem("L3CB-L1");
-                    const cb3l2 = await AsyncStorage.getItem("L3CB-L2");
-                    const cb3l3 = await AsyncStorage.getItem("L3CB-L3");
-                    const cb3l4 = await AsyncStorage.getItem("L3CB-L4");
-                    const cb3l5 = await AsyncStorage.getItem("L3CB-L5");
-                    if (cb3l1 !== null) {
-                        //calculate CBL3 values
-                        const resultsCBL3 = parseInt(cb3l1) + parseInt(cb3l2) + parseInt(cb3l3) + parseInt(cb3l4) + parseInt(cb3l5);
-                        setResult(resultsCBL3)
-                        setCustomResult(`Color Blindness Level 03 Results ${resultsCBL3} / 5`)
-                    } else {
-                        console.log("No saved state");
+                    let cb3l1 = await AsyncStorage.getItem("L3CB-L1");
+                    let cb3l2 = await AsyncStorage.getItem("L3CB-L2");
+                    let cb3l3 = await AsyncStorage.getItem("L3CB-L3");
+                    let cb3l4 = await AsyncStorage.getItem("L3CB-L4");
+                    let cb3l5 = await AsyncStorage.getItem("L3CB-L5");
+                    if (cb3l1 === null){
+                        cb3l1 = 0;
                     }
+                    if (cb3l2 === null){
+                        cb3l2 = 0;
+                    }
+                    if (cb3l3 === null){
+                        cb3l3 = 0;
+                    }
+                    if (cb3l4 === null){
+                        cb3l4 = 0;
+                    }
+                    if (cb3l5 === null){
+                        cb3l5 = 0;
+                    }
+                    //calculate CBL3 values
+                    const resultsCBL3 = parseInt(cb3l1) + parseInt(cb3l2) + parseInt(cb3l3) + parseInt(cb3l4) + parseInt(cb3l5);
+                    setResult(resultsCBL3)             
+                    setCustomResult(`Color Blindness Level 03 Results ${resultsCBL3} / 5`)
                 } catch (error) {
                     console.log("Error getting the state", error);
                 }
             }
             fetchData()
         }
-        else if (whichGame === 'L1N'){
+        else if (whichGame === 'L1N') {
             setCustomResult(`Nearsightedness Level 01 Results ${results} / 6`)
         }
-        else if (whichGame === 'L2N'){
+        else if (whichGame === 'L2N') {
             setCustomResult(`Nearsightedness Level 02 Results ${results} / 5`)
         }
-    }, [whichGame]);
+    }, [whichGame, result]);
 
     const next = async () => {
         try {

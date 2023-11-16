@@ -77,7 +77,7 @@ const Level3CB = ({ startTime, imageSource, pathValue, quote, navigation, nextSc
         saveValue();
       }
     }
-  }, [isDone, updatedTime, nextScreen]);
+  }, [isCompleted, updatedTime, nextScreen]);
 
   const onYesClick = () => {
     pathValue(determinePath().value);
