@@ -15,7 +15,7 @@ const First = ({ navigation }) => {
         const n1 = await AsyncStorage.getItem("L1N");
         const n2 = await AsyncStorage.getItem("L2N");
 
-        if (exsChild != null && ((cb1 !== null && cb2 !== null && cb3 !== null) || (n1 !== null && n2 !== null))) {
+        if (exsChild != null && exsChild === 'true' && ((cb1 !== null && cb2 !== null && cb3 !== null) || (n1 !== null && n2 !== null))) {
           setAvailable(true);
         }
       } catch (error) {

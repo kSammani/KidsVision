@@ -97,11 +97,6 @@ const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen 
                 </View>
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => saveAndContinue(nextScreen)}>
-                        <View style={styles.buttonContent}>
-                            <Text style={styles.buttonText}>{text}</Text>
-                        </View>
-                    </TouchableOpacity>
                     {whichGame === 'L3CB' &&
                         <TouchableOpacity style={styles.button} onPress={() => saveAndContinue('FinalScore')}>
                             <View style={styles.buttonContent}>
@@ -109,6 +104,11 @@ const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen 
                             </View>
                         </TouchableOpacity>
                     }
+                    <TouchableOpacity style={styles.button} onPress={() => saveAndContinue(nextScreen)}>
+                        <View style={styles.buttonContent}>
+                            <Text style={styles.buttonText}>{text}</Text>
+                        </View>
+                    </TouchableOpacity>
                     {whichGame === 'L2N' &&
                         <TouchableOpacity style={styles.button} onPress={() => saveAndContinue('InstructionL1CB')}>
                             <View style={styles.buttonContent}>
