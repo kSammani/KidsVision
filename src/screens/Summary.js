@@ -6,10 +6,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Lottie from 'lottie-react-native';
 
 const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen }) => {
-    const [result, setResult] = useState(results);
+    const [result, setResult] = useState(0);
     const [customResult, setCustomResult] = useState('');
 
     useEffect(() => {
+        setResult(results);
         if (whichGame === 'L1CB') {
             setCustomResult(`Color Blindness Level 01 Results ${results} / 5`)
         }
@@ -55,7 +56,7 @@ const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen 
         else if (whichGame === 'L2N') {
             setCustomResult(`Nearsightedness Level 02 Results ${results} / 5`)
         }
-    }, [whichGame, result]);
+    }, [whichGame, results]);
 
     const next = async () => {
         try {
