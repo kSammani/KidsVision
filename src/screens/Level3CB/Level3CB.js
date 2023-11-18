@@ -85,7 +85,7 @@ const Level3CB = ({ startTime, imageSource, pathValue, quote, navigation, nextSc
 
   const onYesClick = () => {
     pathValue(determinePath().value);
-    if (nextScreen === 'Summary') {
+    if (nextScreen === 'Instructions') {
       setTimeSpent(updatedTime === 0 ? Constants.INITIAL_TIME : (Constants.INITIAL_TIME - updatedTime));
       setSummary(true);
     } else {
@@ -95,7 +95,7 @@ const Level3CB = ({ startTime, imageSource, pathValue, quote, navigation, nextSc
 
   const onNoClick = () => {
     pathValue(0);
-    if (nextScreen === 'Summary') {
+    if (nextScreen === 'Instructions') {
       setTimeSpent(updatedTime === 0 ? Constants.INITIAL_TIME : (Constants.INITIAL_TIME - updatedTime));
       setSummary(true);
     } else {

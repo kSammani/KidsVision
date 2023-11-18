@@ -8,6 +8,7 @@ import Lottie from 'lottie-react-native';
 const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen }) => {
     const [result, setResult] = useState(0);
     const [customResult, setCustomResult] = useState('');
+    const [text, setText] = useState('Next');
 
     useEffect(() => {
         setResult(results);
@@ -18,6 +19,7 @@ const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen 
             setCustomResult(`Color Blindness Level 02 Results ${results} / 5`)
         }
         else if (whichGame === 'L3CB') {
+            setText('Nearsightedness Test');
             async function fetchData() {
                 try {
                     let cb3l1 = await AsyncStorage.getItem("L3CB-L1");
@@ -25,24 +27,24 @@ const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen 
                     let cb3l3 = await AsyncStorage.getItem("L3CB-L3");
                     let cb3l4 = await AsyncStorage.getItem("L3CB-L4");
                     let cb3l5 = await AsyncStorage.getItem("L3CB-L5");
-                    if (cb3l1 === null){
+                    if (cb3l1 === null) {
                         cb3l1 = 0;
                     }
-                    if (cb3l2 === null){
+                    if (cb3l2 === null) {
                         cb3l2 = 0;
                     }
-                    if (cb3l3 === null){
+                    if (cb3l3 === null) {
                         cb3l3 = 0;
                     }
-                    if (cb3l4 === null){
+                    if (cb3l4 === null) {
                         cb3l4 = 0;
                     }
-                    if (cb3l5 === null){
+                    if (cb3l5 === null) {
                         cb3l5 = 0;
                     }
                     //calculate CBL3 values
                     const resultsCBL3 = parseInt(cb3l1) + parseInt(cb3l2) + parseInt(cb3l3) + parseInt(cb3l4) + parseInt(cb3l5);
-                    setResult(resultsCBL3)             
+                    setResult(resultsCBL3)
                     setCustomResult(`Color Blindness Level 03 Results ${resultsCBL3} / 5`)
                 } catch (error) {
                     console.log("Error getting the state", error);
@@ -54,11 +56,12 @@ const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen 
             setCustomResult(`Nearsightedness Level 01 Results ${results} / 6`)
         }
         else if (whichGame === 'L2N') {
+            setText('Final Score');
             setCustomResult(`Nearsightedness Level 02 Results ${results} / 5`)
         }
     }, [whichGame, results]);
 
-    const next = async () => {
+    const saveAndContinue = async (navigateScreen) => {
         try {
             await AsyncStorage.setItem(
                 whichGame,
@@ -68,7 +71,7 @@ const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen 
                 `${whichGame}Time`,
                 playTime.toString(),
             );
-            navigation.navigate(nextScreen);
+            navigation.navigate(navigateScreen);
         } catch (error) {
             console.log(error);
         }
@@ -94,18 +97,25 @@ const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen 
                 </View>
 
                 <View style={styles.buttonContainer}>
-                    {isOver &&
-                        <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('First') }}>
+                    <TouchableOpacity style={styles.button} onPress={() => saveAndContinue(nextScreen)}>
+                        <View style={styles.buttonContent}>
+                            <Text style={styles.buttonText}>{text}</Text>
+                        </View>
+                    </TouchableOpacity>
+                    {whichGame === 'L3CB' &&
+                        <TouchableOpacity style={styles.button} onPress={() => saveAndContinue('FinalScore')}>
                             <View style={styles.buttonContent}>
-                                <Text style={styles.buttonText}>Home</Text>
+                                <Text style={styles.buttonText}>Final Score</Text>
                             </View>
                         </TouchableOpacity>
                     }
-                    <TouchableOpacity style={styles.button} onPress={next}>
-                        <View style={styles.buttonContent}>
-                            <Text style={styles.buttonText}>{whichGame === 'L2N' ? 'Final Socre' : 'Next'}</Text>
-                        </View>
-                    </TouchableOpacity>
+                    {whichGame === 'L2N' &&
+                        <TouchableOpacity style={styles.button} onPress={() => saveAndContinue('InstructionL1CB')}>
+                            <View style={styles.buttonContent}>
+                                <Text style={styles.buttonText}>Color Blindness Test</Text>
+                            </View>
+                        </TouchableOpacity>
+                    }
                 </View>
             </View>
         </View>
@@ -151,8 +161,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         justifyContent: 'space-between',
-        flexDirection: 'row',
-        gap: 10
+        gap: 20
     },
     button: {
         backgroundColor: '#565b64',

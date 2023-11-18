@@ -5,6 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FinalScore = ({ navigation }) => {
   const [isAvailable, setIsAvailable] = useState(true);
+  const [isCbAvailable, setIsCbAvailable] = useState(false);
+  const [isNsAvailable, setIsNsAvailable] = useState(false);
 
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
@@ -22,8 +24,8 @@ const FinalScore = ({ navigation }) => {
   const [sumOfNS, setSumOfNS] = useState(0);
   const [sumOfNSTime, setSumOfNSTime] = useState(0);
 
-  const [cbThreatLevel, setCbThreatLevel] = useState('');
-  const [nsThreatLevel, setNsThreatLevel] = useState('');
+  const [cbThreatLevel, setCbThreatLevel] = useState(null);
+  const [nsThreatLevel, setNsThreatLevel] = useState(null);
 
   useEffect(() => {
     const getEnab = async () => {
@@ -51,6 +53,7 @@ const FinalScore = ({ navigation }) => {
           setAge(ag);
 
           if (cb1 !== null) {
+            setIsCbAvailable(true);
 
             setCbl1(`Level 01 : ${cb1} / 5 ( Time spent : ${cb1Time} seconds )`);
             setCbl2(`Level 02 : ${cb2} / 5 ( Time spent : ${cb2Time} seconds )`);
@@ -86,6 +89,7 @@ const FinalScore = ({ navigation }) => {
           }
 
           if (n1 !== null) {
+            setIsNsAvailable(true);
 
             setNl1(`Level 01 : ${n1} / 6 ( Time spent : ${n1Time} seconds )`);
             setNl2(`Level 02 : ${n2} / 5 ( Time spent : ${n2Time} seconds )`);
@@ -129,16 +133,41 @@ const FinalScore = ({ navigation }) => {
     getEnab();
   });
 
+  useEffect(() => {
+    const removeTLData = async () => {
+        try {
+          // keys to remove
+          const keysToRemove = ['CBTL', 'NSTL'];
+  
+          // wait for all removals to complete
+          await Promise.all(
+            keysToRemove.map(async (key) => {
+              await AsyncStorage.removeItem(key);
+              console.log(`${key} removed successfully`);
+            })
+          );   
+          console.log('Saved data removed successfully');
+        } catch (error) {
+          console.error('Error removing values:', error);
+        }
+      };
+      removeTLData();
+}, []);
+
   const next = async () => {
     try {
-      await AsyncStorage.setItem(
-        'CBTL',
-        cbThreatLevel,
-      );
-      await AsyncStorage.setItem(
-        'NSTL',
-        nsThreatLevel,
-      );
+      if (cbThreatLevel != null) {
+        await AsyncStorage.setItem(
+          'CBTL',
+          cbThreatLevel,
+        );
+      }
+      if (nsThreatLevel != null) {
+        await AsyncStorage.setItem(
+          'NSTL',
+          nsThreatLevel,
+        );
+      }
       navigation.navigate('ThreatLevel');
     } catch (error) {
       console.log(error);
@@ -162,14 +191,22 @@ const FinalScore = ({ navigation }) => {
             <Text style={styles.Txt}>Name - {name}</Text>
             <Text style={styles.Txt}>Age - {age}</Text>
           </View>
-          <Text style={styles.tlTxt}>Color Blindness Test Results</Text>
-          <Text style={styles.rTxt}>{cbl1}</Text>
-          <Text style={styles.rTxt}>{cbl2}</Text>
-          <Text style={styles.rTxt}>{cbl3}</Text>
+          {isCbAvailable && (
+            <>
+              <Text style={styles.tlTxt}>Color Blindness Test Results</Text>
+              <Text style={styles.rTxt}>{cbl1}</Text>
+              <Text style={styles.rTxt}>{cbl2}</Text>
+              <Text style={styles.rTxt}>{cbl3}</Text>
+            </>
+          )}
 
-          <Text style={styles.tlTxt}>Nearsightedness Test Results</Text>
-          <Text style={styles.rTxt}>{nl1}</Text>
-          <Text style={styles.rTxt}>{nl2}</Text>
+          {isNsAvailable && (
+            <>
+              <Text style={styles.tlTxt}>Nearsightedness Test Results</Text>
+              <Text style={styles.rTxt}>{nl1}</Text>
+              <Text style={styles.rTxt}>{nl2}</Text>
+            </>
+          )}
           <View>
             <View style={styles.touchContainer}>
               <TouchableOpacity style={styles.tch} onPress={next}>
@@ -202,6 +239,13 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   rTxt: {
+    textAlign: 'center',
+    padding: 10,
+    fontFamily: 'DreamingOutloudPro',
+    color: '#000',
+    fontSize: 20,
+  },
+  threatTxt: {
     textAlign: 'center',
     padding: 10,
     fontFamily: 'DreamingOutloudPro',

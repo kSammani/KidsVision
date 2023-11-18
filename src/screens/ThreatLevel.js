@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, Animated, StyleSheet, Linking, PermissionsAndroid } from 'react-native';
+import { Text, View, ScrollView, Animated, StyleSheet, Linking, PermissionsAndroid } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
@@ -25,7 +25,7 @@ const ThreatLevel = ({ navigation }) => {
         const cbtl = await AsyncStorage.getItem("CBTL");
         const nstl = await AsyncStorage.getItem("NSTL");
 
-        if (cbtl !== '') {
+        if (cbtl !== null) {
           setIsCbAvailable(true);
           setCbThreatLevel(cbtl);
 
@@ -47,7 +47,7 @@ const ThreatLevel = ({ navigation }) => {
           }
         }
 
-        if (nstl !== '') {
+        if (nstl !== null) {
           setIsNsAvailable(true);
           setNsThreatLevel(nstl);
 
@@ -194,61 +194,65 @@ const ThreatLevel = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      {isCbAvailable && (
-        <>
-          <Text style={styles.tlTxt}>Color Blindness Test Threat Level</Text>
-          <Text style={styles.threatTxt}>{cbThreatLevel}</Text>
-          <Animated.View
-            style={[
-              styles.indicator,
-              {
-                width: animatedValueCB.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ['0%', '100%'],
-                }),
-                backgroundColor: getBackgroundColor(cbValue),
-              },
-            ]}
-          />
-        </>
-      )}
-      <View style={styles.divider}></View>
-      {isNsAvailable && (
-        <>
-          <Text style={styles.tlTxt}>Nearsightedness Test Threat Level</Text>
-          <Text style={styles.threatTxt}>{nsThreatLevel}</Text>
-          <Animated.View
-            style={[
-              styles.indicator,
-              {
-                width: animatedValueNS.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ['0%', '100%'],
-                }),
-                backgroundColor: getBackgroundColor(nsValue),
-              },
-            ]}
-          />
-        </>
-      )}
-      <View style={styles.divider}></View>
-      {isAlertNeeded && (
-        <>
-          <Text style={styles.alertTxt}>{alertText}</Text>
-          <View style={styles.touchContainer}>
-            <TouchableOpacity style={styles.tch} onPress={getEyeCareLocations}>
-              <Text style={styles.buttonText}>Find Nearest Eye Care</Text>
-            </TouchableOpacity>
-          </View>
-        </>
-      )}
-      <View style={styles.touchContainer}>
-        <TouchableOpacity style={styles.tch} onPress={() => navigation.navigate('First')}>
-          <Text style={styles.buttonText}>Home</Text>
-        </TouchableOpacity>
+    
+      <View style={styles.container}>
+        {isCbAvailable && (
+          <>
+            <Text style={styles.tlTxt}>Color Blindness Test Threat Level</Text>
+            <Text style={styles.threatTxt}>{cbThreatLevel}</Text>
+            <Animated.View
+              style={[
+                styles.indicator,
+                {
+                  width: animatedValueCB.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['0%', '100%'],
+                  }),
+                  backgroundColor: getBackgroundColor(cbValue),
+                },
+              ]}
+            />
+            <View style={styles.divider}></View>
+          </>
+        )}
+        {isNsAvailable && (
+          <>
+            <Text style={styles.tlTxt}>Nearsightedness Test Threat Level</Text>
+            <Text style={styles.threatTxt}>{nsThreatLevel}</Text>
+            <Animated.View
+              style={[
+                styles.indicator,
+                {
+                  width: animatedValueNS.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['0%', '100%'],
+                  }),
+                  backgroundColor: getBackgroundColor(nsValue),
+                },
+              ]}
+            />
+            <View style={styles.divider}></View>
+          </>
+        )}
+        <View style={styles.buttonContainer}>
+          {isAlertNeeded && (
+            <>
+              <Text style={styles.alertTxt}>{alertText}</Text>
+              <TouchableOpacity style={styles.button} onPress={getEyeCareLocations}>
+                <View style={styles.buttonContent}>
+                  <Text style={styles.buttonText}>Find Nearest Eye Care</Text>
+                </View>
+              </TouchableOpacity>
+            </>
+          )}
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('First')}>
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonText}>Home</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+
   )
 }
 
@@ -263,7 +267,7 @@ const styles = StyleSheet.create({
   },
   indicator: {
     height: 10,
-    borderRadius: 5, 
+    borderRadius: 5,
     borderWidth: 1,
     borderColor: 'gray',
   },
@@ -301,32 +305,29 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 20,
   },
-  touchContainer: {
-    height: 60,
-    width: 330,
-    margin: 10,
+  buttonContainer: {
+    justifyContent: 'space-between',
+    gap: 15
   },
-  tch: {
-    height: '100%',
-    width: '100%',
+  button: {
+    backgroundColor: '#565b64',
+    padding: 10,
+    borderRadius: 25,
+    shadowRadius: 5,
+    shadowOpacity: 1,
+  },
+  buttonContent: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 35,
     padding: 10,
-    backgroundColor: '#565b64',
   },
   buttonText: {
-    fontSize: 25,
+    color: 'white',
     fontFamily: 'DreamingOutloudPro',
-    color: '#fff'
-  },
-  ltView: {
-    height: '100%',
-    width: '100%',
-    position: 'absolute',
-  },
-  lottie: {
-    flex: 1,
+    fontSize: 20,
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
 });
 

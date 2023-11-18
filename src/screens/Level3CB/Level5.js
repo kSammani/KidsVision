@@ -17,7 +17,7 @@ const Level5 = ({ navigation, route }) => {
     }
   }
   return (
-    <MainComp  startTime={startTime} imageSource={require('../../images/level3CB/ish5.png')} pathValue={saveValue} quote={quote} navigation={navigation} nextScreen="Summary" />
+    <MainComp  startTime={startTime} imageSource={require('../../images/level3CB/ish5.png')} pathValue={saveValue} quote={quote} navigation={navigation} nextScreen="Instructions" />
   );
 };
 

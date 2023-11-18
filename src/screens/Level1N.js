@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Image, Text, Animated } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Timer from './helpComp/Timer';
 import Summary from './Summary';
@@ -32,6 +33,27 @@ const Level1N = ({ navigation }) => {
         ['Apple', 'Strawberry'],
         ['Papaya', 'Grapes'],
     ];
+
+    useEffect(() => {
+        const removeNSData = async () => {
+            try {
+              // keys to remove
+              const keysToRemove = ['L1N', 'L1NTime', 'L2N', 'L2NTime'];
+      
+              // wait for all removals to complete
+              await Promise.all(
+                keysToRemove.map(async (key) => {
+                  await AsyncStorage.removeItem(key);
+                  console.log(`${key} removed successfully`);
+                })
+              );   
+              console.log('Saved data removed successfully');
+            } catch (error) {
+              console.error('Error removing values:', error);
+            }
+          };
+          removeNSData();
+    }, []);
 
     useEffect(() => {
         console.log(clickedFruit);

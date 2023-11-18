@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Image, Text, Animated, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Timer from './helpComp/Timer';
 import Summary from './Summary';
@@ -34,6 +35,27 @@ const Level1CB = ({ navigation }) => {
         [4, 5, 6],
         [7, 8, 9],
     ];
+
+    useEffect(() => {
+        const removeCBData = async () => {
+            try {
+              // keys to remove
+              const keysToRemove = ['L1CB', 'L1CBTime', 'L2CB', 'L2CBTime', 'L3CB', 'L3CBTime'];
+      
+              // wait for all removals to complete
+              await Promise.all(
+                keysToRemove.map(async (key) => {
+                  await AsyncStorage.removeItem(key);
+                  console.log(`${key} removed successfully`);
+                })
+              );   
+              console.log('Saved data removed successfully');
+            } catch (error) {
+              console.error('Error removing values:', error);
+            }
+          };
+          removeCBData();
+    }, []);
 
     useEffect(() => {
         console.log(clickedNumbers);
