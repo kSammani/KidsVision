@@ -40,7 +40,8 @@ const Level1CB = ({ navigation }) => {
         const removeCBData = async () => {
             try {
                 const exsChild = await AsyncStorage.getItem("existChild");
-                if (exsChild != null && exsChild === 'true') {
+                const ftChild = await AsyncStorage.getItem("firstTimeChild");
+                if ((exsChild != null && exsChild === 'true') || (ftChild != null && ftChild === 'true')) {
                     // keys to remove
                     const keysToRemove = ['L1CB', 'L1CBTime', 'L2CB', 'L2CBTime', 'L3CB', 'L3CBTime'];
 

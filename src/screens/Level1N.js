@@ -38,7 +38,8 @@ const Level1N = ({ navigation }) => {
         const removeNSData = async () => {
             try {
                 const exsChild = await AsyncStorage.getItem("existChild");
-                if (exsChild != null && exsChild === 'true') {
+                const ftChild = await AsyncStorage.getItem("firstTimeChild");
+                if ((exsChild != null && exsChild === 'true') || (ftChild != null && ftChild === 'true')) {
                     // keys to remove
                     const keysToRemove = ['L1N', 'L1NTime', 'L2N', 'L2NTime'];
 
