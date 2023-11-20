@@ -193,65 +193,79 @@ const ThreatLevel = ({ navigation }) => {
     });
   };
 
+  const home = async () => {
+    try {
+      // set exist true bcz if click home it not identify the child
+      await AsyncStorage.setItem(
+        'existChild',
+        'true',
+      );
+
+      navigation.navigate('First');
+    } catch (error) {
+      console.log("Error getting the state", error);
+    }
+  };
+
   return (
-    
-      <View style={styles.container}>
-        {isCbAvailable && (
+
+    <View style={styles.container}>
+      {isCbAvailable && (
+        <>
+          <Text style={styles.tlTxt}>Color Blindness Test Threat Level</Text>
+          <Text style={styles.threatTxt}>{cbThreatLevel}</Text>
+          <Animated.View
+            style={[
+              styles.indicator,
+              {
+                width: animatedValueCB.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['0%', '100%'],
+                }),
+                backgroundColor: getBackgroundColor(cbValue),
+              },
+            ]}
+          />
+          <View style={styles.divider}></View>
+        </>
+      )}
+      {isNsAvailable && (
+        <>
+          <Text style={styles.tlTxt}>Nearsightedness Test Threat Level</Text>
+          <Text style={styles.threatTxt}>{nsThreatLevel}</Text>
+          <Animated.View
+            style={[
+              styles.indicator,
+              {
+                width: animatedValueNS.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['0%', '100%'],
+                }),
+                backgroundColor: getBackgroundColor(nsValue),
+              },
+            ]}
+          />
+          <View style={styles.divider}></View>
+        </>
+      )}
+      <View style={styles.buttonContainer}>
+        {isAlertNeeded && (
           <>
-            <Text style={styles.tlTxt}>Color Blindness Test Threat Level</Text>
-            <Text style={styles.threatTxt}>{cbThreatLevel}</Text>
-            <Animated.View
-              style={[
-                styles.indicator,
-                {
-                  width: animatedValueCB.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['0%', '100%'],
-                  }),
-                  backgroundColor: getBackgroundColor(cbValue),
-                },
-              ]}
-            />
-            <View style={styles.divider}></View>
+            <Text style={styles.alertTxt}>{alertText}</Text>
+            <TouchableOpacity style={styles.button} onPress={getEyeCareLocations}>
+              <View style={styles.buttonContent}>
+                <Text style={styles.buttonText}>Find Nearest Eye Care</Text>
+              </View>
+            </TouchableOpacity>
           </>
         )}
-        {isNsAvailable && (
-          <>
-            <Text style={styles.tlTxt}>Nearsightedness Test Threat Level</Text>
-            <Text style={styles.threatTxt}>{nsThreatLevel}</Text>
-            <Animated.View
-              style={[
-                styles.indicator,
-                {
-                  width: animatedValueNS.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['0%', '100%'],
-                  }),
-                  backgroundColor: getBackgroundColor(nsValue),
-                },
-              ]}
-            />
-            <View style={styles.divider}></View>
-          </>
-        )}
-        <View style={styles.buttonContainer}>
-          {isAlertNeeded && (
-            <>
-              <Text style={styles.alertTxt}>{alertText}</Text>
-              <TouchableOpacity style={styles.button} onPress={getEyeCareLocations}>
-                <View style={styles.buttonContent}>
-                  <Text style={styles.buttonText}>Find Nearest Eye Care</Text>
-                </View>
-              </TouchableOpacity>
-            </>
-          )}
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('First')}>
-            <View style={styles.buttonContent}>
-              <Text style={styles.buttonText}>Home</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.button} onPress={home}>
+          <View style={styles.buttonContent}>
+            <Text style={styles.buttonText}>Home</Text>
+          </View>
+        </TouchableOpacity>
       </View>
+    </View>
 
   )
 }

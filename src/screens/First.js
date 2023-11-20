@@ -2,28 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const First = ({ navigation }) => {
   const [available, setAvailable] = useState(false);
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     const getExistChild = async () => {
-      try {
-        const exsChild = await AsyncStorage.getItem("existChild");
-        const cb1 = await AsyncStorage.getItem("L1CB");
-        const cb2 = await AsyncStorage.getItem("L2CB");
-        const cb3 = await AsyncStorage.getItem("L3CB");
-        const n1 = await AsyncStorage.getItem("L1N");
-        const n2 = await AsyncStorage.getItem("L2N");
+      if (isFocused) {
+        try {
+          const exsChild = await AsyncStorage.getItem("existChild");
+          const cb1 = await AsyncStorage.getItem("L1CB");
+          const cb2 = await AsyncStorage.getItem("L2CB");
+          const cb3 = await AsyncStorage.getItem("L3CB");
+          const n1 = await AsyncStorage.getItem("L1N");
+          const n2 = await AsyncStorage.getItem("L2N");
 
-        if (exsChild != null && exsChild === 'true' && ((cb1 !== null && cb2 !== null && cb3 !== null) || (n1 !== null && n2 !== null))) {
-          setAvailable(true);
+          if (exsChild != null && exsChild === 'true' && ((cb1 !== null && cb2 !== null && cb3 !== null) || (n1 !== null && n2 !== null))) {
+            setAvailable(true);
+          }
+        } catch (error) {
+          console.log("Error getting the state", error);
         }
-      } catch (error) {
-        console.log("Error getting the state", error);
       }
     };
     getExistChild();
-  });
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
