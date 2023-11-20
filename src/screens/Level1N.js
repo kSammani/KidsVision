@@ -50,15 +50,10 @@ const Level1N = ({ navigation }) => {
                         })
                     );
                 } else {
-                    const cb1 = await AsyncStorage.getItem("L1CB");     
-                    const cb2 = await AsyncStorage.getItem("L2CB");
-                    const cb3 = await AsyncStorage.getItem("L3CB");
-                    const n1 = await AsyncStorage.getItem("L1N");
-                    const n2 = await AsyncStorage.getItem("L2N");
-
-                    if (cb1 !== null && cb2 !== null && cb3 !== null) {
+                    const cu = await AsyncStorage.getItem("currentChild");
+                    if (cu !== null && cu === 'false') {
                         // keys to remove
-                        const keysToRemove = ['L1N', 'L1NTime', 'L2N', 'L2NTime'];
+                        const keysToRemove = ['L1CB', 'L1CBTime', 'L2CB', 'L2CBTime', 'L3CB', 'L3CBTime'];
 
                         // wait for all removals to complete
                         await Promise.all(
@@ -68,9 +63,9 @@ const Level1N = ({ navigation }) => {
                             })
                         );
                     }
-                    if (n1 !== null && n2 !== null) {
+                    if (cu !== null && cu === 'true') {
                         // keys to remove
-                        const keysToRemove = ['L1CB', 'L1CBTime', 'L2CB', 'L2CBTime', 'L3CB', 'L3CBTime'];
+                        const keysToRemove = ['L1N', 'L1NTime', 'L2N', 'L2NTime'];
 
                         // wait for all removals to complete
                         await Promise.all(

@@ -71,6 +71,10 @@ const Summary = ({ isOver, whichGame, results, playTime, navigation, nextScreen 
                 `${whichGame}Time`,
                 playTime.toString(),
             );
+            await AsyncStorage.setItem(
+                'currentChild',
+                'true',
+            );
             navigation.navigate(navigateScreen);
         } catch (error) {
             console.log(error);

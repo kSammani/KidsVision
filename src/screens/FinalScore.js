@@ -49,6 +49,12 @@ const FinalScore = ({ navigation }) => {
         const n2Time = await AsyncStorage.getItem("L2NTime");
 
         if ((cb1 !== null && cb2 !== null && cb3 !== null) || (n1 !== null && n2 !== null)) {
+          // set exist true bcz if click home it not identify the child
+          await AsyncStorage.setItem(
+            'existChild',
+            'true',
+          );
+
           setName(nm);
           setAge(ag);
 
