@@ -38,8 +38,7 @@ const Level1N = ({ navigation }) => {
         const removeNSData = async () => {
             try {
                 const exsChild = await AsyncStorage.getItem("existChild");
-                const ftChild = await AsyncStorage.getItem("firstTimeChild");
-                if ((exsChild != null && exsChild === 'true') || (ftChild != null && ftChild === 'true')) {
+                if (exsChild != null && exsChild === 'true') {
                     // keys to remove
                     const keysToRemove = ['L1N', 'L1NTime', 'L2N', 'L2NTime'];
 
@@ -51,16 +50,36 @@ const Level1N = ({ navigation }) => {
                         })
                     );
                 } else {
-                    // keys to remove
-                    const keysToRemove = ['L1CB', 'L1CBTime', 'L2CB', 'L2CBTime', 'L3CB', 'L3CBTime', 'L1N', 'L1NTime', 'L2N', 'L2NTime'];
+                    const cb1 = await AsyncStorage.getItem("L1CB");     
+                    const cb2 = await AsyncStorage.getItem("L2CB");
+                    const cb3 = await AsyncStorage.getItem("L3CB");
+                    const n1 = await AsyncStorage.getItem("L1N");
+                    const n2 = await AsyncStorage.getItem("L2N");
 
-                    // wait for all removals to complete
-                    await Promise.all(
-                        keysToRemove.map(async (key) => {
-                            await AsyncStorage.removeItem(key);
-                            console.log(`${key} removed successfully`);
-                        })
-                    );
+                    if (cb1 !== null && cb2 !== null && cb3 !== null) {
+                        // keys to remove
+                        const keysToRemove = ['L1N', 'L1NTime', 'L2N', 'L2NTime'];
+
+                        // wait for all removals to complete
+                        await Promise.all(
+                            keysToRemove.map(async (key) => {
+                                await AsyncStorage.removeItem(key);
+                                console.log(`${key} removed successfully`);
+                            })
+                        );
+                    }
+                    if (n1 !== null && n2 !== null) {
+                        // keys to remove
+                        const keysToRemove = ['L1CB', 'L1CBTime', 'L2CB', 'L2CBTime', 'L3CB', 'L3CBTime'];
+
+                        // wait for all removals to complete
+                        await Promise.all(
+                            keysToRemove.map(async (key) => {
+                                await AsyncStorage.removeItem(key);
+                                console.log(`${key} removed successfully`);
+                            })
+                        );
+                    }
                 }
                 console.log('Saved data removed successfully');
             } catch (error) {
