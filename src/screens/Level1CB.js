@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Image, Text, Animated, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 import Timer from './helpComp/Timer';
 import Summary from './Summary';
@@ -36,36 +37,14 @@ const Level1CB = ({ navigation }) => {
         [7, 8, 9],
     ];
 
+    const isFocused = useIsFocused();
+
     useEffect(() => {
         const removeCBData = async () => {
-            try {
-                const exsChild = await AsyncStorage.getItem("existChild");
-                if (exsChild != null && exsChild === 'true') {
-                    // keys to remove
-                    const keysToRemove = ['L1CB', 'L1CBTime', 'L2CB', 'L2CBTime', 'L3CB', 'L3CBTime'];
-
-                    // wait for all removals to complete
-                    await Promise.all(
-                        keysToRemove.map(async (key) => {
-                            await AsyncStorage.removeItem(key);
-                            console.log(`${key} removed successfully`);
-                        })
-                    );
-                } else {
-                    const cu = await AsyncStorage.getItem("currentChild");
-                    if (cu !== null && cu === 'false') {
-                        // keys to remove
-                        const keysToRemove = ['L1N', 'L1NTime', 'L2N', 'L2NTime'];
-
-                        // wait for all removals to complete
-                        await Promise.all(
-                            keysToRemove.map(async (key) => {
-                                await AsyncStorage.removeItem(key);
-                                console.log(`${key} removed successfully`);
-                            })
-                        );
-                    }
-                    if (cu !== null && cu === 'true') {
+            if (isFocused) {
+                try {
+                    const exsChild = await AsyncStorage.getItem("existChild");
+                    if (exsChild != null && exsChild === 'true') {
                         // keys to remove
                         const keysToRemove = ['L1CB', 'L1CBTime', 'L2CB', 'L2CBTime', 'L3CB', 'L3CBTime'];
 
@@ -76,15 +55,41 @@ const Level1CB = ({ navigation }) => {
                                 console.log(`${key} removed successfully`);
                             })
                         );
+                    } else {
+                        const cu = await AsyncStorage.getItem("currentChild");
+                        if (cu !== null && cu === 'false') {
+                            // keys to remove
+                            const keysToRemove = ['L1N', 'L1NTime', 'L2N', 'L2NTime'];
+
+                            // wait for all removals to complete
+                            await Promise.all(
+                                keysToRemove.map(async (key) => {
+                                    await AsyncStorage.removeItem(key);
+                                    console.log(`${key} removed successfully`);
+                                })
+                            );
+                        }
+                        if (cu !== null && cu === 'true') {
+                            // keys to remove
+                            const keysToRemove = ['L1CB', 'L1CBTime', 'L2CB', 'L2CBTime', 'L3CB', 'L3CBTime'];
+
+                            // wait for all removals to complete
+                            await Promise.all(
+                                keysToRemove.map(async (key) => {
+                                    await AsyncStorage.removeItem(key);
+                                    console.log(`${key} removed successfully`);
+                                })
+                            );
+                        }
                     }
+                    console.log('Saved data removed successfully');
+                } catch (error) {
+                    console.error('Error removing values:', error);
                 }
-                console.log('Saved data removed successfully');
-            } catch (error) {
-                console.error('Error removing values:', error);
             }
         };
         removeCBData();
-    }, []);
+    }, [isFocused]);
 
     useEffect(() => {
         console.log(clickedNumbers);
