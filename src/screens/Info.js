@@ -17,6 +17,13 @@ const Info = ({ navigation }) => {
           'true',
         );
       }
+      else{
+        await AsyncStorage.setItem(
+          'existChild',
+          'false',
+        );
+      }
+
       if (text !== '' && number !== '') {
         await AsyncStorage.setItem(
           'name',
