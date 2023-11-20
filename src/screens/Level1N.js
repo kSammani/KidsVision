@@ -37,22 +37,36 @@ const Level1N = ({ navigation }) => {
     useEffect(() => {
         const removeNSData = async () => {
             try {
-              // keys to remove
-              const keysToRemove = ['L1N', 'L1NTime', 'L2N', 'L2NTime'];
-      
-              // wait for all removals to complete
-              await Promise.all(
-                keysToRemove.map(async (key) => {
-                  await AsyncStorage.removeItem(key);
-                  console.log(`${key} removed successfully`);
-                })
-              );   
-              console.log('Saved data removed successfully');
+                const exsChild = await AsyncStorage.getItem("existChild");
+                if (exsChild != null && exsChild === 'true') {
+                    // keys to remove
+                    const keysToRemove = ['L1N', 'L1NTime', 'L2N', 'L2NTime'];
+
+                    // wait for all removals to complete
+                    await Promise.all(
+                        keysToRemove.map(async (key) => {
+                            await AsyncStorage.removeItem(key);
+                            console.log(`${key} removed successfully`);
+                        })
+                    );
+                } else {
+                    // keys to remove
+                    const keysToRemove = ['L1CB', 'L1CBTime', 'L2CB', 'L2CBTime', 'L3CB', 'L3CBTime', 'L1N', 'L1NTime', 'L2N', 'L2NTime'];
+
+                    // wait for all removals to complete
+                    await Promise.all(
+                        keysToRemove.map(async (key) => {
+                            await AsyncStorage.removeItem(key);
+                            console.log(`${key} removed successfully`);
+                        })
+                    );
+                }
+                console.log('Saved data removed successfully');
             } catch (error) {
-              console.error('Error removing values:', error);
+                console.error('Error removing values:', error);
             }
-          };
-          removeNSData();
+        };
+        removeNSData();
     }, []);
 
     useEffect(() => {
