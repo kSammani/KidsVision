@@ -12,6 +12,10 @@ const First = ({ navigation }) => {
     const getExistChild = async () => {
       if (isFocused) {
         try {
+          await AsyncStorage.setItem(
+            'currentChild',
+            'false',
+          );
           const exsChild = await AsyncStorage.getItem("existChild");
           const cb1 = await AsyncStorage.getItem("L1CB");
           const cb2 = await AsyncStorage.getItem("L2CB");

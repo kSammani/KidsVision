@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,20 +7,6 @@ import Toast from 'react-native-simple-toast';
 const Info = ({ navigation }) => {
   const [text, onChangeText] = useState('');
   const [number, onChangeNumber] = useState('');
-
-  useEffect(() => {
-    const currentUser = async () => {
-      try {
-        await AsyncStorage.setItem(
-          'currentChild',
-          'false',
-        );
-      } catch (error) {
-        console.error('Error removing values:', error);
-      }
-    };
-    currentUser();
-  }, []);
 
   const save = async () => {
     try {
