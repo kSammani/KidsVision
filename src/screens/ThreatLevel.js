@@ -79,7 +79,7 @@ const ThreatLevel = ({ navigation }) => {
       }
     };
     getRes();
-  }, []);
+  });
 
   // animation
   const animatedValueCB = useRef(new Animated.Value(0)).current;

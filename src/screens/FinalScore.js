@@ -131,7 +131,7 @@ const FinalScore = ({ navigation }) => {
         }
     };
     getEnab();
-  }, []);
+  });
 
   useEffect(() => {
     const removeTLData = async () => {
@@ -152,7 +152,7 @@ const FinalScore = ({ navigation }) => {
         }
     };
     removeTLData();
-  }, []);
+  });
 
   const next = async () => {
     try {
