@@ -3,7 +3,6 @@ import { Text, View, ScrollView, Animated, StyleSheet, Linking, PermissionsAndro
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
-import { useIsFocused } from '@react-navigation/native';
 
 const ThreatLevel = ({ navigation }) => {
   const [isCbAvailable, setIsCbAvailable] = useState(false);
@@ -20,71 +19,67 @@ const ThreatLevel = ({ navigation }) => {
 
   const [location, setLocation] = useState({ latitude: null, longitude: null });
 
-  const isFocused = useIsFocused();
-
   useEffect(() => {
     const getRes = async () => {
-      if (isFocused) {
-        try {
-          const cbtl = await AsyncStorage.getItem("CBTL");
-          const nstl = await AsyncStorage.getItem("NSTL");
+      try {
+        const cbtl = await AsyncStorage.getItem("CBTL");
+        const nstl = await AsyncStorage.getItem("NSTL");
 
-          if (cbtl !== null) {
-            setIsCbAvailable(true);
-            setCbThreatLevel(cbtl);
+        if (cbtl !== null) {
+          setIsCbAvailable(true);
+          setCbThreatLevel(cbtl);
 
-            switch (true) {
-              case cbtl.includes('low'):
-                setCbValue('low');
-                break;
-              case cbtl.includes('medium'):
-                setCbValue('medium');
-                break;
-              case cbtl.includes('good'):
-                setCbValue('good');
-                break;
-              case cbtl.includes('high'):
-                setCbValue('high');
-                break;
-              default:
-                setCbValue('default');
-            }
+          switch (true) {
+            case cbtl.includes('low'):
+              setCbValue('low');
+              break;
+            case cbtl.includes('medium'):
+              setCbValue('medium');
+              break;
+            case cbtl.includes('good'):
+              setCbValue('good');
+              break;
+            case cbtl.includes('high'):
+              setCbValue('high');
+              break;
+            default:
+              setCbValue('default');
           }
-
-          if (nstl !== null) {
-            setIsNsAvailable(true);
-            setNsThreatLevel(nstl);
-
-            switch (true) {
-              case nstl.includes('low'):
-                setNsValue('low');
-                break;
-              case nstl.includes('medium'):
-                setNsValue('medium');
-                break;
-              case nstl.includes('good'):
-                setNsValue('good');
-                break;
-              case nstl.includes('high'):
-                setNsValue('high');
-                break;
-              default:
-                setNsValue('default');
-            }
-          }
-
-          if (cbtl === 'Vision has medium threat' || cbtl === 'Vision has high threat' || nstl === 'Vision has medium threat' || nstl === 'Vision has high threat') {
-            setIsAlertNeeded(true);
-            setAlertText('Please Take Your Child to the Eye Doctor!');
-          }
-
-        } catch (error) {
-          console.log("Error getting the state", error);
         }
+
+        if (nstl !== null) {
+          setIsNsAvailable(true);
+          setNsThreatLevel(nstl);
+
+          switch (true) {
+            case nstl.includes('low'):
+              setNsValue('low');
+              break;
+            case nstl.includes('medium'):
+              setNsValue('medium');
+              break;
+            case nstl.includes('good'):
+              setNsValue('good');
+              break;
+            case nstl.includes('high'):
+              setNsValue('high');
+              break;
+            default:
+              setNsValue('default');
+          }
+        }
+
+        if (cbtl === 'Vision has medium threat' || cbtl === 'Vision has high threat' || nstl === 'Vision has medium threat' || nstl === 'Vision has high threat') {
+          setIsAlertNeeded(true);
+          setAlertText('Please Take Your Child to the Eye Doctor!');
+        }
+
+      } catch (error) {
+        console.log("Error getting the state", error);
       }
     };
     getRes();
-  }, [isFocused]);
+  }, []);
 
   // animation
   const animatedValueCB = useRef(new Animated.Value(0)).current;

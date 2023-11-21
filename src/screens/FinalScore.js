@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
 
 const FinalScore = ({ navigation }) => {
   const [isAvailable, setIsAvailable] = useState(true);
@@ -28,11 +27,8 @@ const FinalScore = ({ navigation }) => {
   const [cbThreatLevel, setCbThreatLevel] = useState(null);
   const [nsThreatLevel, setNsThreatLevel] = useState(null);
 
-  const isFocused = useIsFocused();
-
   useEffect(() => {
     const getEnab = async () => {
-      if (isFocused) {
         try {
           const nm = await AsyncStorage.getItem("name");
           const ag = await AsyncStorage.getItem("age");
@@ -133,14 +129,12 @@ const FinalScore = ({ navigation }) => {
         } catch (error) {
           console.log("Error getting the state", error);
         }
-      }
     };
     getEnab();
-  }, [isFocused]);
+  }, []);
 
   useEffect(() => {
     const removeTLData = async () => {
-      if (isFocused) {
         try {
           // keys to remove
           const keysToRemove = ['CBTL', 'NSTL'];
@@ -156,10 +150,9 @@ const FinalScore = ({ navigation }) => {
         } catch (error) {
           console.error('Error removing values:', error);
         }
-      }
     };
     removeTLData();
-  }, [isFocused]);
+  }, []);
 
   const next = async () => {
     try {
