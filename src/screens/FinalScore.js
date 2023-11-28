@@ -29,134 +29,127 @@ const FinalScore = ({ navigation }) => {
 
   useEffect(() => {
     const getEnab = async () => {
-      try {
-        const nm = await AsyncStorage.getItem("name");
-        const ag = await AsyncStorage.getItem("age");
+        try {
+          const nm = await AsyncStorage.getItem("name");
+          const ag = await AsyncStorage.getItem("age");
 
-        const cb1 = await AsyncStorage.getItem("L1CB");
-        const cb1Time = await AsyncStorage.getItem("L1CBTime");
+          const cb1 = await AsyncStorage.getItem("L1CB");
+          const cb1Time = await AsyncStorage.getItem("L1CBTime");
 
-        const cb2 = await AsyncStorage.getItem("L2CB");
-        const cb2Time = await AsyncStorage.getItem("L2CBTime");
+          const cb2 = await AsyncStorage.getItem("L2CB");
+          const cb2Time = await AsyncStorage.getItem("L2CBTime");
 
-        const cb3 = await AsyncStorage.getItem("L3CB");
-        const cb3Time = await AsyncStorage.getItem("L3CBTime");
+          const cb3 = await AsyncStorage.getItem("L3CB");
+          const cb3Time = await AsyncStorage.getItem("L3CBTime");
 
-        const n1 = await AsyncStorage.getItem("L1N");
-        const n1Time = await AsyncStorage.getItem("L1NTime");
+          const n1 = await AsyncStorage.getItem("L1N");
+          const n1Time = await AsyncStorage.getItem("L1NTime");
 
-        const n2 = await AsyncStorage.getItem("L2N");
-        const n2Time = await AsyncStorage.getItem("L2NTime");
+          const n2 = await AsyncStorage.getItem("L2N");
+          const n2Time = await AsyncStorage.getItem("L2NTime");
 
-        if ((cb1 !== null && cb2 !== null && cb3 !== null) || (n1 !== null && n2 !== null)) {
-          setName(nm);
-          setAge(ag);
+          if ((cb1 !== null && cb2 !== null && cb3 !== null) || (n1 !== null && n2 !== null)) {
+            setName(nm);
+            setAge(ag);
 
-          if (cb1 !== null) {
-            setIsCbAvailable(true);
+            if (cb1 !== null) {
+              setIsCbAvailable(true);
 
-            setCbl1(`Level 01 : ${cb1} / 5 ( Time spent : ${cb1Time} seconds )`);
-            setCbl2(`Level 02 : ${cb2} / 5 ( Time spent : ${cb2Time} seconds )`);
-            setCbl3(`Level 03 : ${cb3} / 5 ( Time spent : ${cb3Time} seconds )`);
+              setCbl1(`Level 01 : ${cb1} / 5 ( Time spent : ${cb1Time} seconds )`);
+              setCbl2(`Level 02 : ${cb2} / 5 ( Time spent : ${cb2Time} seconds )`);
+              setCbl3(`Level 03 : ${cb3} / 5 ( Time spent : ${cb3Time} seconds )`);
 
-            setSumOfCB(parseInt(cb1) + parseInt(cb2) + parseInt(cb3));
-            setSumOfCBTime(parseInt(cb1Time) + parseInt(cb2Time) + parseInt(cb3Time));
+              setSumOfCB(parseInt(cb1) + parseInt(cb2) + parseInt(cb3));
+              setSumOfCBTime(parseInt(cb1Time) + parseInt(cb2Time) + parseInt(cb3Time));
 
-            // Define membership functions for summation of color blindeness results
-            const highCB = sum => Math.max(0, Math.min((sum - 4) / 4, 1));
-            const mediumCB = sum => Math.max(0, Math.min((sum - 4) / 3, 1));
-            const lowCB = sum => Math.max(0, Math.min((sum - 8) / 3, 1));
-            const veryLowCB = sum => Math.max(0, Math.min(sum / 4, 1));
-
-            // Define membership functions for summation of color blindeness time
-            const lowTime = time => Math.max(0, Math.min((360 - time) / 360, 1));
-            const highTime = time => Math.max(0, Math.min(time / 360, 1));
-
-            // Fuzzy rules for color blindeness threat level
-            const threatRules = [
-              { level: 'Vision is very good', condition: highCB(sumOfCB) && lowTime(sumOfCBTime) },
-              { level: 'Vision has low threat', condition: (lowCB(sumOfCB) || mediumCB(sumOfCB)) && lowTime(sumOfCBTime) },
-              { level: 'Vision has medium threat', condition: mediumCB(sumOfCB) && lowTime(sumOfCBTime) },
-              { level: 'Vision has high threat', condition: veryLowCB(sumOfCB) && lowTime(sumOfCBTime) },
-              { level: 'Vision has low threat', condition: highCB(sumOfCB) && highTime(sumOfCBTime) },
-              { level: 'Vision has medium threat', condition: mediumCB(sumOfCB) && highTime(sumOfCBTime) },
-              { level: 'Vision has high threat', condition: veryLowCB(sumOfCB) && highTime(sumOfCBTime) },
-              { level: 'Vision has very high threat', condition: veryLowCB(sumOfCB) && highTime(sumOfCBTime) },
-            ];
-
-            // Find the first rule that matches and set the threat level
-            const matchedRule = threatRules.find(rule => rule.condition);
-            if (matchedRule) {
-              setCbThreatLevel(matchedRule.level);
-              console.log('CB Fuzzy', matchedRule.level);
+              if (sumOfCB >= 11 && sumOfCBTime < 360) {
+                setCbThreatLevel('Vision is very good');
+              }
+              else if (sumOfCB >= 8 && sumOfCB <= 10 && sumOfCBTime < 360) {
+                setCbThreatLevel('Vision has low threat');
+              }
+              else if (sumOfCB >= 4 && sumOfCB <= 7 && sumOfCBTime < 360) {
+                setCbThreatLevel('Vision has medium threat');
+              }
+              else if (sumOfCB < 4 && sumOfCBTime < 360) {
+                setCbThreatLevel('Vision has high threat');
+              }
+              else if (sumOfCB >= 11 && sumOfCBTime == 360) {
+                setCbThreatLevel('Vision has low threat');
+              }
+              else if (sumOfCB >= 8 && sumOfCB <= 10 && sumOfCBTime == 360) {
+                setCbThreatLevel('Vision has medium threat');
+              }
+              else if (sumOfCB >= 4 && sumOfCB <= 7 && sumOfCBTime == 360) {
+                setCbThreatLevel('Vision has high threat');
+              }
+              else if (sumOfCB < 4 && sumOfCBTime == 360) {
+                setCbThreatLevel('Vision has very high threat');
+              }
             }
-          }
 
-          if (n1 !== null) {
-            setIsNsAvailable(true);
+            if (n1 !== null) {
+              setIsNsAvailable(true);
 
-            setNl1(`Level 01 : ${n1} / 6 ( Time spent : ${n1Time} seconds )`);
-            setNl2(`Level 02 : ${n2} / 5 ( Time spent : ${n2Time} seconds )`);
+              setNl1(`Level 01 : ${n1} / 6 ( Time spent : ${n1Time} seconds )`);
+              setNl2(`Level 02 : ${n2} / 5 ( Time spent : ${n2Time} seconds )`);
 
-            setSumOfNS(parseInt(n1) + parseInt(n2));
-            setSumOfNSTime(parseInt(n1Time) + parseInt(n2Time));
+              setSumOfNS(parseInt(n1) + parseInt(n2));
+              setSumOfNSTime(parseInt(n1Time) + parseInt(n2Time));
 
-            // Define membership functions for summation of nearsightness results
-            const highNS = sum => Math.max(0, Math.min((sum - 3) / 5, 1));
-            const mediumNS = sum => Math.max(0, Math.min((sum - 3) / 2, 1));
-            const lowNS = sum => Math.max(0, Math.min(sum / 5, 1));
-
-            // Define membership functions for sumOfNSTime
-            const lowTime = time => Math.max(0, Math.min((240 - time) / 240, 1));
-            const highTime = time => Math.max(0, Math.min(time / 240, 1));
-
-            // Fuzzy rules for nearsightness threat level
-            const nsThreatRules = [
-              { level: 'Vision is very good', condition: highNS(sumOfNS) && lowTime(sumOfNSTime) },
-              { level: 'Vision has low threat', condition: (mediumNS(sumOfNS) || highNS(sumOfNS)) && lowTime(sumOfNSTime) },
-              { level: 'Vision has medium threat', condition: mediumNS(sumOfNS) && lowTime(sumOfNSTime) },
-              { level: 'Vision has high threat', condition: lowNS(sumOfNS) && lowTime(sumOfNSTime) },
-              { level: 'Vision has low threat', condition: highNS(sumOfNS) && highTime(sumOfNSTime) },
-              { level: 'Vision has medium threat', condition: mediumNS(sumOfNS) && highTime(sumOfNSTime) },
-              { level: 'Vision has high threat', condition: lowNS(sumOfNS) && highTime(sumOfNSTime) },
-              { level: 'Vision has very high threat', condition: lowNS(sumOfNS) && highTime(sumOfNSTime) },
-            ];
-
-            // Find the first rule that matches and set the threat level
-            const matchedRule = nsThreatRules.find(rule => rule.condition);
-            if (matchedRule) {
-              setNsThreatLevel(matchedRule.level);
-              console.log('NS Fuzzy', matchedRule.level);
+              if (sumOfNS >= 8 && sumOfNSTime < 240) {
+                setNsThreatLevel('Vision is very good');
+              }
+              else if (sumOfNS >= 5 && sumOfNS <= 7 && sumOfNSTime < 240) {
+                setNsThreatLevel('Vision has low threat');
+              }
+              else if (sumOfNS >= 3 && sumOfNS <= 5 && sumOfNSTime < 240) {
+                setNsThreatLevel('Vision has medium threat');
+              }
+              else if (sumOfNS < 3 && sumOfNSTime < 240) {
+                setNsThreatLevel('Vision has high threat');
+              }
+              else if (sumOfNS >= 8 && sumOfNSTime == 240) {
+                setNsThreatLevel('Vision has low threat');
+              }
+              else if (sumOfNS >= 5 && sumOfNS <= 7 && sumOfNSTime == 240) {
+                setNsThreatLevel('Vision has medium threat');
+              }
+              else if (sumOfNS >= 3 && sumOfNS <= 5 && sumOfNSTime == 240) {
+                setNsThreatLevel('Vision has high threat');
+              }
+              else if (sumOfNS < 3 && sumOfNSTime == 240) {
+                setNsThreatLevel('Vision has very high threat');
+              }
             }
+          } else {
+            setIsAvailable(false);
+            console.log("No saved state");
           }
-        } else {
-          setIsAvailable(false);
-          console.log("No saved state");
+        } catch (error) {
+          console.log("Error getting the state", error);
         }
-      } catch (error) {
-        console.log("Error getting the state", error);
-      }
     };
     getEnab();
   });
 
   useEffect(() => {
     const removeTLData = async () => {
-      try {
-        // keys to remove
-        const keysToRemove = ['CBTL', 'NSTL'];
+        try {
+          // keys to remove
+          const keysToRemove = ['CBTL', 'NSTL'];
 
-        // wait for all removals to complete
-        await Promise.all(
-          keysToRemove.map(async (key) => {
-            await AsyncStorage.removeItem(key);
-            console.log(`${key} removed successfully`);
-          })
-        );
-        console.log('Saved data removed successfully');
-      } catch (error) {
-        console.error('Error removing values:', error);
-      }
+          // wait for all removals to complete
+          await Promise.all(
+            keysToRemove.map(async (key) => {
+              await AsyncStorage.removeItem(key);
+              console.log(`${key} removed successfully`);
+            })
+          );
+          console.log('Saved data removed successfully');
+        } catch (error) {
+          console.error('Error removing values:', error);
+        }
     };
     removeTLData();
   });
