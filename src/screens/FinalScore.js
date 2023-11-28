@@ -102,7 +102,7 @@ const FinalScore = ({ navigation }) => {
             setSumOfNSTime(parseInt(n1Time) + parseInt(n2Time));
 
             // Fuzzy logic rule base
-            const fuzzyNsRules = [
+            const fuzzyRules = [
               { conditions: [(sumOfNS >= 8), (sumOfNSTime < 240)], result: 'Vision is very good' },
               { conditions: [(sumOfNS >= 5 && sumOfNS <= 7), (sumOfNSTime < 240)], result: 'Vision has low threat' },
               { conditions: [(sumOfNS >= 3 && sumOfNS <= 5), (sumOfNSTime < 240)], result: 'Vision has medium threat' },
@@ -116,7 +116,7 @@ const FinalScore = ({ navigation }) => {
             // Apply fuzzy logic rules
             let fuzzyNsResult = 'Undefined';
 
-            for (const rule of fuzzyNsRules) {
+            for (const rule of fuzzyRules) {
               const ruleSatisfied = rule.conditions.every(condition => condition);
               if (ruleSatisfied) {
                 fuzzyNsResult = rule.result;
